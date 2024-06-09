@@ -6,7 +6,7 @@ const home = () => {
     <div className=" w-full bg-gray-50">
       <Search />
       <RecentFolder />
-      <RecentFiles/>
+      <RecentFiles />
     </div>
   );
 };

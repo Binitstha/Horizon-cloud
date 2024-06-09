@@ -23,7 +23,9 @@ const folders = () => {
             <span className="text-5xl">
               <FaFolder />
             </span>
-            <div className="text-ellipsis w-32 overflow-clip text-nowrap text-center">{folder.name}</div>
+            <div className="text-ellipsis w-32 overflow-clip text-nowrap text-center">
+              {folder.name}
+            </div>
           </div>
         ))}
       </main>
