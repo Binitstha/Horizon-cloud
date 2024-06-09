@@ -4,8 +4,12 @@ const searchBar = () => {
   return (
     <>
       <div className="w-full p-10 rounded-md">
-        <form action="" className="relative">
-          <input type="text" className="h-10 pl-10 w-full border-2"  placeholder="Search...."/>
+        <form action="" className="relative ">
+          <input
+            type="text"
+            className="h-10 pl-10 w-full border-2 rounded-md"
+            placeholder="Search...."
+          />
           <button className="absolute left-3 top-3">
             <FaSearch />
           </button>

@@ -5,7 +5,7 @@ import Storage from "@/app/storage/page";
 const Dashboard = () => {
   return (
     <>
-      <div className="flex">
+      <div className="flex ">
         <SideNav />
         <div className="flex justify-between w-full">
           <Home />
