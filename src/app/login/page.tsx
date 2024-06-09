@@ -3,6 +3,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import LoadingProgress from "@/components/ui/loadingProgress";
 
 const LoginPage = () => {
   const { data: session, status } = useSession();
@@ -16,7 +17,7 @@ const LoginPage = () => {
   }, [status, router, session]);
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return <LoadingProgress />;
   }
 
   return (

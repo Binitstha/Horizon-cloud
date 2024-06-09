@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "@/components/sessionWrapper";
+import SideNav from "@/components/sideNav";
+import Storage from "./storage/page";
 
 const inter = Inter({ subsets: ["latin"] });
 

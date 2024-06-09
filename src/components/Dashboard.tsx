@@ -1,34 +1,19 @@
-"use client";
-
-import { signOut, useSession } from "next-auth/react";
-import React from "react";
-import { useRouter } from "next/navigation";
+import Home from "@/app/home/page";
+import SideNav from "./sideNav";
+import Storage from "@/app/storage/page";
 
 const Dashboard = () => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  if (status === "loading") {
-    return <p>Loading...</p>; // Optionally show a loading state while fetching session
-  }
-
   return (
     <>
-      {session ? (
-        ""
-      ) : (
-        <section className="flex flex-col justify-center items-center my-10">
-          <div className="flex flex-col justify-center items-center gap-5">
-            <p>You are not logged in</p>
-            <button
-              className="p-2 w-64 rounded-lg bg-slate-100"
-              onClick={() => router.push("/login")}
-            >
-              Login
-            </button>
+      <div className="flex">
+        <SideNav />
+        <div className="flex justify-between w-full">
+          <Home />
+          <div className="bg-slate-100 w-[30rem]">
+            <Storage />
           </div>
-        </section>
-      )}
+        </div>
+      </div>
     </>
   );
 };
