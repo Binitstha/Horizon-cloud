@@ -21,19 +21,19 @@ const LoginPage = () => {
   }
 
   return (
-    <main className="h-screen flex justify-center items-center">
-      <section className="p-10 rounded-xl shadow-xl flex flex-col gap-5 justify-center items-center">
+    <main className="bg-[#09090b] h-screen flex justify-center items-center">
+      <section className="p-10 rounded-xl border-[#27272a] border-2 flex flex-col gap-5 justify-center items-center">
         <h1 className="text-3xl">Horizon Cloud</h1>
         <div className="flex justify-center items-center gap-3 my-10">
           <button
-            className="gap-5 flex justify-center items-center p-2 w-64 rounded-lg bg-slate-100"
+            className="gap-5 flex justify-center items-center p-2 w-64 rounded-lg border-[#27272a] border-2"
             onClick={() => signIn("google")}
           >
             <FaGoogle />
             <p>Sign in with Google</p>
           </button>
           <button
-            className="gap-5 flex justify-center items-center p-2 w-64 rounded-lg bg-slate-100"
+            className="gap-5 flex justify-center items-center p-2 w-64 rounded-lg border-[#27272a] border-2"
             onClick={() => signIn("github")}
           >
             <FaGithub />

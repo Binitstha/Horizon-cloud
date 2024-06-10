@@ -41,7 +41,7 @@ const NavLinks = () => {
           <div
             className={clsx(
               { "bg-sky-100 text-blue-600": menu.href === pathName },
-              `" cursor-pointer w-40 justify-start h-14 rounded-md items-center hover:bg-blue-200 hover:scale-105 transition-all duration-150 pl-3 flex gap-3 h-14"`,
+              `" cursor-pointer w-40 justify-start h-14 rounded-md items-center hover:bg-neutral-900 hover:scale-105 transition-all duration-150 pl-3 flex gap-3 h-14"`,
             )}
           >
             <span className="text-lg">{menu.icon}</span>

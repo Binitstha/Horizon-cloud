@@ -3,7 +3,7 @@ import RecentFolder from "@/components/recentFolders";
 import RecentFiles from "@/components/recentFiles";
 const home = () => {
   return (
-    <div className=" w-full bg-gray-50">
+    <div className="bg-[#09090b] w-full">
       <Search />
       <RecentFolder />
       <RecentFiles />

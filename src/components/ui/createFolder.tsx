@@ -30,6 +30,7 @@ const DialogCloseButton = () => {
           <div className="grid flex-1 gap-2">
             <Input
               type="text"
+              className="outline-blue-300"
               placeholder="Folder name"
               onChange={(e) => setFolderName(e.target.value)}
             />

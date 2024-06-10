@@ -13,11 +13,11 @@ const Login = () => {
       {session ? (
         ""
       ) : (
-        <section className="flex flex-col justify-center items-center my-10">
-          <div className="flex flex-col justify-center items-center gap-5">
+        <section className=" w-full h-screen bg-[#09090b] flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center gap-5 p-4 shadow-md border-2 border-[#27272a] rounded-md">
             <p>You are not logged in</p>
             <button
-              className="p-2 w-64 rounded-lg bg-slate-100"
+              className="p-2 w-64 rounded-lg border-[#27272a] border-2"
               onClick={() => router.push("/login")}
             >
               Login

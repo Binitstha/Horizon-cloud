@@ -7,7 +7,7 @@ const searchBar = () => {
         <form action="" className="relative ">
           <input
             type="text"
-            className="h-10 pl-10 w-full border-2 rounded-md"
+            className="h-10 pl-10 w-full border-2 bg-black rounded-md"
             placeholder="Search...."
           />
           <button className="absolute left-3 top-3">
