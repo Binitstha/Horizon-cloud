@@ -11,7 +11,6 @@ export default function CircularIndeterminate() {
         width: "100vw",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: '#09090b',
       }}
     >
       <CircularProgress />

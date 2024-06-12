@@ -1,5 +1,5 @@
 const storage = () => {
-  return <div className="sticky top-0 bg-black h-screen">storage</div>;
+  return <div className="sticky top-0 flex justify-center items-center h-screen">storage</div>;
 };
 
 export default storage;

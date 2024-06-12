@@ -20,7 +20,9 @@ export default function RootLayout({
   return (
     <SessionWrapper>
       <html lang="en">
-        <body className={inter.className + "bg-[#09090b] text-white" }>{children}</body>
+        <body className={inter.className + "bg-[#09090b] text-white"}>
+          {children}
+        </body>
       </html>
     </SessionWrapper>
   );

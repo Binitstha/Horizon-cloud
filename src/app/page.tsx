@@ -16,7 +16,7 @@ export default function Page() {
   }
   return (
     <>
-      <main className="bg-[#09090b]">
+      <main className="text-black">
         {!session ? (
           <LoginPage />
         ) : (

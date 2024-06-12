@@ -5,21 +5,31 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import app from "../../../config/firebaseConfig";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { useSession } from "next-auth/react";
 
 const DialogCloseButton = () => {
   const [folderName, setFolderName] = useState<string>("");
+  const db = getFirestore(app);
 
-  const handleClick = () => {
+  const {data:session} = useSession()
+  const docId = Date.now().toString()
+  const handleClick = async () => {
+    await setDoc(doc(db, "folders", docId), {
+      id: docId,
+      name: folderName,
+      createdBy: session?.user?.email
+    });
     console.log(folderName);
   };
+
   return (
     <>
       <DialogContent className="sm:max-w-md rounded-md">
@@ -30,7 +40,7 @@ const DialogCloseButton = () => {
           <div className="grid flex-1 gap-2">
             <Input
               type="text"
-              className="outline-blue-300"
+              className="outline-blue-300 text-black"
               placeholder="Folder name"
               onChange={(e) => setFolderName(e.target.value)}
             />
@@ -52,4 +62,4 @@ const DialogCloseButton = () => {
   );
 };
 
-export default DialogCloseButton;
+export default DialogCloseButton

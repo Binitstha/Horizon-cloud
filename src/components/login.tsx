@@ -13,7 +13,7 @@ const Login = () => {
       {session ? (
         ""
       ) : (
-        <section className=" w-full h-screen bg-[#09090b] flex flex-col justify-center items-center">
+        <section className=" w-full h-screen flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center items-center gap-5 p-4 shadow-md border-2 border-[#27272a] rounded-md">
             <p>You are not logged in</p>
             <button
