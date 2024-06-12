@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/lib/use-toast";
 import {
   Dialog,
   DialogClose,
@@ -16,18 +17,36 @@ import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 
 const DialogCloseButton = () => {
+  const { toast } = useToast();
   const [folderName, setFolderName] = useState<string>("");
   const db = getFirestore(app);
 
-  const {data:session} = useSession()
-  const docId = Date.now().toString()
+  const { data: session } = useSession();
+  const docId = Date.now().toString();
+
   const handleClick = async () => {
-    await setDoc(doc(db, "folders", docId), {
-      id: docId,
-      name: folderName,
-      createdBy: session?.user?.email
-    });
-    console.log(folderName);
+    try {
+      if (folderName) {
+        await setDoc(doc(db, "folders", docId), {
+          id: docId,
+          name: folderName,
+          createdBy: session?.user?.email,
+        });
+
+        toast({
+          variant: "destructive",
+          description: "Your File is created.",
+        });
+
+        console.log(folderName);
+      } else {
+        toast({
+          description: "Folder name cannot be null",
+        });
+      }
+    } catch (err) {
+      toast({ description: "Error while creating file" });
+    }
   };
 
   return (
@@ -62,4 +81,4 @@ const DialogCloseButton = () => {
   );
 };
 
-export default DialogCloseButton
+export default DialogCloseButton;

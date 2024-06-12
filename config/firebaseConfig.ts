@@ -4,7 +4,7 @@ import { getAnalytics, isSupported } from "firebase/analytics";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyD8IP9AEtafyvQnkmSCCqJKpBR4ZiFM6CU',
+  apiKey: "AIzaSyD8IP9AEtafyvQnkmSCCqJKpBR4ZiFM6CU",
   authDomain: "horizon-cloud-425806.firebaseapp.com",
   projectId: "horizon-cloud-425806",
   storageBucket: "horizon-cloud-425806.appspot.com",
@@ -16,16 +16,18 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-if (typeof window !== 'undefined' && window.document) {
-  isSupported().then((supported) => {
-    if (supported) {
-      const analytics = getAnalytics(app);
-    } else {
-      console.log('Firebase Analytics is not supported in this environment.');
-    }
-  }).catch((error) => {
-    console.error('Error checking Firebase Analytics support:', error);
-  });
+if (typeof window !== "undefined" && window.document) {
+  isSupported()
+    .then((supported) => {
+      if (supported) {
+        const analytics = getAnalytics(app);
+      } else {
+        console.log("Firebase Analytics is not supported in this environment.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error checking Firebase Analytics support:", error);
+    });
 }
 
 export default app;

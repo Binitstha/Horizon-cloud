@@ -5,6 +5,7 @@ import "./globals.css";
 import SessionWrapper from "@/components/sessionWrapper";
 import SideNav from "@/components/sideNav";
 import Storage from "./storage/page";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,8 @@ export default function RootLayout({
     <SessionWrapper>
       <html lang="en">
         <body className={inter.className + "bg-[#09090b] text-white"}>
-          {children}
+          <main>{children}</main>
+          <Toaster />
         </body>
       </html>
     </SessionWrapper>
