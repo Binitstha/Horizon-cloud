@@ -1,20 +1,57 @@
+import { querySnapshot } from "@/lib/actions";
+import { getFirestore, DocumentData } from "firebase/firestore";
 import { FaFolder } from "react-icons/fa";
+import app from "../../../config/firebaseConfig";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { toast } from "@/lib/use-toast";
 
-const folders = () => {
-  const foldersList = [
-    { id: 1, name: "folder 1" },
-    { id: 2, name: "folder 2" },
-    { id: 3, name: "folder 3" },
-    { id: 4, name: "folder 3sadbnkasj" },
-    { id: 5, name: "folder 3" },
-    { id: 6, name: "folder 3" },
-    { id: 7, name: "folder 3" },
-    { id: 8, name: "folder 4" },
-  ];
+const Folders = () => {
+  const { data: session } = useSession();
+  const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
+
+  useEffect(() => {
+    const fetchFolders = async () => {
+      if (session?.user?.email) {
+        const email = session.user.email;
+        try {
+          const snapshot = await querySnapshot(
+            getFirestore(app),
+            "folders",
+            email,
+          );
+          if (snapshot && !snapshot.empty) {
+            const foldersData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setFoldersList(foldersData);
+          } else {
+            toast({
+              variant: "destructive",
+              description: `No folders found for ${email}`,
+            });
+          }
+        } catch (error) {
+          toast({
+            description: "Error fetching folders:",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          description: "Session is empty or email is not available.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchFolders();
+  }, [session,foldersList]);
 
   return (
-    <section className=" flex justify-center items-center">
-      <main className=" mt-5 justify-start items-center flex flex-wrap gap-5">
+    <section className="flex justify-start items-center">
+      <main className="mt-5 justify-start items-center flex flex-wrap gap-5">
         {foldersList.map((folder) => (
           <div
             key={folder.id}
@@ -33,4 +70,4 @@ const folders = () => {
   );
 };
 
-export default folders;
+export default Folders;

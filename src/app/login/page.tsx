@@ -12,7 +12,6 @@ const LoginPage = () => {
   useEffect(() => {
     if (status === "authenticated") {
       router.push("/");
-      console.log("session", session.user);
     }
   }, [status, router, session]);
 

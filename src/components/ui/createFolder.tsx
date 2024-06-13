@@ -34,13 +34,13 @@ const DialogCloseButton = () => {
         });
 
         toast({
-          variant: "destructive",
           description: "Your File is created.",
-        });
-
-        console.log(folderName);
-      } else {
-        toast({
+          });
+          
+          console.log(folderName);
+          } else {
+            toast({
+          variant: "destructive",
           description: "Folder name cannot be null",
         });
       }
