@@ -1,51 +1,36 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/use-toast";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import app from "../../../config/firebaseConfig";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getFirestore, setDoc, doc, addDoc, collection } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 
 const DialogCloseButton = () => {
   const { toast } = useToast();
   const [folderName, setFolderName] = useState<string>("");
   const db = getFirestore(app);
-
   const { data: session } = useSession();
-  const docId = Date.now().toString();
 
   const handleClick = async () => {
     try {
       if (folderName) {
-        await setDoc(doc(db, "folders", docId), {
-          id: docId,
+        // Use addDoc for auto-generated IDs (recommended)
+        const folderRef = await addDoc(collection(db, "folders"), {
           name: folderName,
           createdBy: session?.user?.email,
         });
 
-        toast({
-          description: "Your File is created.",
-          });
-          
-          console.log(folderName);
-          } else {
-            toast({
-          variant: "destructive",
-          description: "Folder name cannot be null",
-        });
+        toast({ description: "Your folder is created.", });
+        console.log("Folder created with ID:", folderRef.id);
+        // Clear the input field after successful creation
+        setFolderName("");
+      } else {
+        toast({ variant: "destructive", description: "Folder name cannot be null", });
       }
     } catch (err) {
-      toast({ description: "Error while creating file" });
+      toast({ description: "Error while creating folder" });
     }
   };
 
@@ -62,16 +47,13 @@ const DialogCloseButton = () => {
               className="outline-blue-300 text-black"
               placeholder="Folder name"
               onChange={(e) => setFolderName(e.target.value)}
+              value={folderName} // Clear input field after creation
             />
           </div>
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
-            <Button
-              type="submit"
-              variant="secondary"
-              onClick={() => handleClick()}
-            >
+            <Button type="submit" variant="secondary" onClick={handleClick}>
               Create
             </Button>
           </DialogClose>

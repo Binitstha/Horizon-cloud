@@ -1,5 +1,10 @@
 import { querySnapshot } from "@/lib/actions";
-import { getFirestore, DocumentData } from "firebase/firestore";
+import {
+  getFirestore,
+  DocumentData,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 import { FaFolder } from "react-icons/fa";
 import app from "../../../config/firebaseConfig";
 import { useSession } from "next-auth/react";
@@ -11,43 +16,34 @@ const Folders = () => {
   const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
 
   useEffect(() => {
-    const fetchFolders = async () => {
-      if (session?.user?.email) {
-        const email = session.user.email;
-        try {
-          const snapshot = await querySnapshot(
-            getFirestore(app),
-            "folders",
-            email,
-          );
-          if (snapshot && !snapshot.empty) {
-            const foldersData = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setFoldersList(foldersData);
-          } else {
-            toast({
-              variant: "destructive",
-              description: `No folders found for ${email}`,
-            });
-          }
-        } catch (error) {
+    const unsubscribe = onSnapshot(
+      collection(getFirestore(app), "folders"),
+      (snapshot) => {
+        if (snapshot.empty) {
           toast({
-            description: "Error fetching folders:",
             variant: "destructive",
+            description: `No folders found for ${session?.user?.email}`,
           });
+          return;
         }
-      } else {
+
+        const foldersData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setFoldersList(foldersData);
+      },
+      (error) => {
         toast({
-          description: "Session is empty or email is not available.",
+          description: "Error fetching folders:",
           variant: "destructive",
         });
-      }
-    };
+        console.error("Error fetching folders:", error);
+      },
+    );
 
-    fetchFolders();
-  }, [session,foldersList]);
+    return () => unsubscribe(); // Cleanup function for unmounting
+  }, [session]);
 
   return (
     <section className="flex justify-start items-center">
