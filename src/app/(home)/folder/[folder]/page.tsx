@@ -4,6 +4,7 @@ import ParentFolderContext, {
 } from "@/context/parentFolderContext";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
+import RecentFolders from "@/components/recentFolders";
 
 const Page = ({ params }: { params: { folder: string } }) => {
   const searchParams = useSearchParams();
@@ -17,6 +18,8 @@ const Page = ({ params }: { params: { folder: string } }) => {
     if (id !== null) {
       setParentFolderId(id);
     }
+
+    return () => setParentFolderId(null);
   }, [id, setParentFolderId]);
 
   if (!parentFolderId) {
@@ -25,7 +28,7 @@ const Page = ({ params }: { params: { folder: string } }) => {
   return (
     <>
       <div>
-        Hello, this is dynamic routing!
+        <RecentFolders />
         <p>{name}</p>
         <p>{id}</p>
       </div>

@@ -1,15 +1,15 @@
 // parentFolderContext.tsx
 
-import { createContext, Dispatch, SetStateAction } from 'react';
+import { createContext, Dispatch, SetStateAction } from "react";
 
 export interface ParentFolderContextType {
-  parentFolderId: string;
-  setParentFolderId: Dispatch<SetStateAction<string>>;
+  parentFolderId: string | null;
+  setParentFolderId: Dispatch<SetStateAction<string | null>>;
 }
 
 const ParentFolderContext = createContext<ParentFolderContextType>({
-  parentFolderId: '',
-  setParentFolderId: () => {}
+  parentFolderId: null,
+  setParentFolderId: () => {},
 });
 
 export default ParentFolderContext;

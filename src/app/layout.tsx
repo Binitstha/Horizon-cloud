@@ -6,8 +6,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "@/components/sessionWrapper";
 import { Toaster } from "@/components/ui/toaster";
-import { useState } from "react";
-import ParentFolderContext from "@/context/parentFolderContext";
+import { useEffect, useState } from "react";
+import ParentFolderContext, {
+  ParentFolderContextType,
+} from "@/context/parentFolderContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +22,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [parentFolderId, setParentFolderId] = useState<string>('');
+  const [parentFolderId, setParentFolderId] = useState<string | null>(null);
   return (
     <SessionWrapper>
       <ParentFolderContext.Provider

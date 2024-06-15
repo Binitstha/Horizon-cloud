@@ -13,7 +13,9 @@ import { useContext, useState } from "react";
 import app from "../../../config/firebaseConfig";
 import { getFirestore, addDoc, collection } from "firebase/firestore";
 import { useSession } from "next-auth/react";
-import ParentFolderContext, { ParentFolderContextType } from "@/context/parentFolderContext";
+import ParentFolderContext, {
+  ParentFolderContextType,
+} from "@/context/parentFolderContext";
 
 const DialogCloseButton = () => {
   const { toast } = useToast();
@@ -23,7 +25,9 @@ const DialogCloseButton = () => {
   const context = useContext<ParentFolderContextType>(ParentFolderContext);
 
   if (!context) {
-    throw new Error('ParentFolderContext must be used within a ParentFolderProvider');
+    throw new Error(
+      "ParentFolderContext must be used within a ParentFolderProvider",
+    );
   }
 
   const { parentFolderId, setParentFolderId } = context;

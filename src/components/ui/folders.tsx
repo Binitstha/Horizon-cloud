@@ -17,6 +17,7 @@ const Folders = () => {
   const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
 
   useEffect(() => {
+
     const unsubscribe = onSnapshot(
       collection(getFirestore(app), "folders"),
       (snapshot) => {
@@ -47,9 +48,11 @@ const Folders = () => {
   }, [session]);
 
   const router = useRouter();
-  const handleClick = (id: string,name:string) => {
+  const handleClick = (id: string, name: string) => {
     router.push(`/folder/${name}?id=${id}`);
   };
+  
+
   return (
     <section className="flex justify-start items-center">
       <main className="mt-5 justify-start items-center flex flex-wrap gap-5">
@@ -57,7 +60,7 @@ const Folders = () => {
           <div
             key={folder.id}
             className="flex border-2 flex-col h-28 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center gap-3 hover:scale-105 transition-all duration-150"
-            onClick={() => handleClick(folder.id,folder.name)}
+            onClick={() => handleClick(folder.id, folder.name)}
           >
             <span className="text-5xl">
               <FaFolder />

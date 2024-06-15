@@ -18,7 +18,7 @@ export const querySnapshot = async (
   collectionName: string,
   email: string,
 ): Promise<QuerySnapshot<DocumentData> | undefined> => {
-  unstable_noStore()
+  unstable_noStore();
   try {
     const q = query(
       collection(database, collectionName),
@@ -31,4 +31,4 @@ export const querySnapshot = async (
   }
 };
 
-// export const 
+// export const
