@@ -1,33 +1,50 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/use-toast";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import app from "../../../config/firebaseConfig";
-import { getFirestore, setDoc, doc, addDoc, collection } from "firebase/firestore";
+import { getFirestore, addDoc, collection } from "firebase/firestore";
 import { useSession } from "next-auth/react";
+import ParentFolderContext, { ParentFolderContextType } from "@/context/parentFolderContext";
 
 const DialogCloseButton = () => {
   const { toast } = useToast();
   const [folderName, setFolderName] = useState<string>("");
   const db = getFirestore(app);
   const { data: session } = useSession();
+  const context = useContext<ParentFolderContextType>(ParentFolderContext);
+
+  if (!context) {
+    throw new Error('ParentFolderContext must be used within a ParentFolderProvider');
+  }
+
+  const { parentFolderId, setParentFolderId } = context;
 
   const handleClick = async () => {
     try {
       if (folderName) {
-        // Use addDoc for auto-generated IDs (recommended)
         const folderRef = await addDoc(collection(db, "folders"), {
           name: folderName,
           createdBy: session?.user?.email,
+          parentFolderId: parentFolderId,
         });
 
-        toast({ description: "Your folder is created.", });
+        toast({ description: "Your folder is created." });
         console.log("Folder created with ID:", folderRef.id);
-        // Clear the input field after successful creation
         setFolderName("");
       } else {
-        toast({ variant: "destructive", description: "Folder name cannot be null", });
+        toast({
+          variant: "destructive",
+          description: "Folder name cannot be null",
+        });
       }
     } catch (err) {
       toast({ description: "Error while creating folder" });
@@ -47,7 +64,7 @@ const DialogCloseButton = () => {
               className="outline-blue-300 text-black"
               placeholder="Folder name"
               onChange={(e) => setFolderName(e.target.value)}
-              value={folderName} // Clear input field after creation
+              value={folderName}
             />
           </div>
         </div>

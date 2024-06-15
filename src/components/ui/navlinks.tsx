@@ -13,7 +13,7 @@ const NavLinks = () => {
     {
       name: "Home",
       icon: <IoHome />,
-      href: "/home",
+      href: "/",
     },
     {
       name: "My files",

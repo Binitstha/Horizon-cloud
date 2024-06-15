@@ -1,4 +1,4 @@
-import { querySnapshot } from "@/lib/actions";
+"use client";
 import {
   getFirestore,
   DocumentData,
@@ -10,6 +10,7 @@ import app from "../../../config/firebaseConfig";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "@/lib/use-toast";
+import { useRouter } from "next/navigation";
 
 const Folders = () => {
   const { data: session } = useSession();
@@ -45,6 +46,10 @@ const Folders = () => {
     return () => unsubscribe(); // Cleanup function for unmounting
   }, [session]);
 
+  const router = useRouter();
+  const handleClick = (id: string,name:string) => {
+    router.push(`/folder/${name}?id=${id}`);
+  };
   return (
     <section className="flex justify-start items-center">
       <main className="mt-5 justify-start items-center flex flex-wrap gap-5">
@@ -52,6 +57,7 @@ const Folders = () => {
           <div
             key={folder.id}
             className="flex border-2 flex-col h-28 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center gap-3 hover:scale-105 transition-all duration-150"
+            onClick={() => handleClick(folder.id,folder.name)}
           >
             <span className="text-5xl">
               <FaFolder />
