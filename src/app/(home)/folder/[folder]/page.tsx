@@ -4,7 +4,7 @@ import ParentFolderContext, {
 } from "@/context/parentFolderContext";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
-import RecentFolders from "@/components/recentFolders";
+import SubFolders from "@/components/subFolder";
 
 const Page = ({ params }: { params: { folder: string } }) => {
   const searchParams = useSearchParams();
@@ -28,9 +28,7 @@ const Page = ({ params }: { params: { folder: string } }) => {
   return (
     <>
       <div>
-        <RecentFolders />
-        <p>{name}</p>
-        <p>{id}</p>
+        <SubFolders />
       </div>
     </>
   );

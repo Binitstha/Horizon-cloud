@@ -17,7 +17,6 @@ const Folders = () => {
   const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
 
   useEffect(() => {
-
     const unsubscribe = onSnapshot(
       collection(getFirestore(app), "folders"),
       (snapshot) => {
@@ -32,7 +31,7 @@ const Folders = () => {
         const foldersData = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }));
+        })).filter((folder : DocumentData)=> (folder.parentFolderId === null));
         setFoldersList(foldersData);
       },
       (error) => {
@@ -44,14 +43,13 @@ const Folders = () => {
       },
     );
 
-    return () => unsubscribe(); // Cleanup function for unmounting
+    return () => unsubscribe();
   }, [session]);
 
   const router = useRouter();
   const handleClick = (id: string, name: string) => {
     router.push(`/folder/${name}?id=${id}`);
   };
-  
 
   return (
     <section className="flex justify-start items-center">
