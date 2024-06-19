@@ -17,7 +17,7 @@ const SideNav = () => {
                   <span>Add new file</span> <IoMdAddCircleOutline />
                 </div>
               </DialogTrigger>
-              <CreateFile/>
+              <CreateFile />
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>

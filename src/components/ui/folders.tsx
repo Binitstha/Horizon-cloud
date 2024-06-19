@@ -28,10 +28,12 @@ const Folders = () => {
           return;
         }
 
-        const foldersData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })).filter((folder : DocumentData)=> (folder.parentFolderId === null));
+        const foldersData = snapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .filter((folder: DocumentData) => folder.parentFolderId === null);
         setFoldersList(foldersData);
       },
       (error) => {
