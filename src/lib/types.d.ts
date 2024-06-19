@@ -10,3 +10,13 @@ export type folder = {
   name: string;
   createdBy: string;
 };
+
+export type File = {
+  createdBy: string;
+  id: string;
+  name: string;
+  modifiedAt: number;
+  size: number;
+  parentFolderId: string | null;
+  type: string;
+};

@@ -1,4 +1,5 @@
-import { SiFiles } from "react-icons/si";
+'use client'
+import { FaFileAlt } from "react-icons/fa";
 import {
   Table,
   TableBody,
@@ -8,18 +9,52 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState, useEffect } from "react";
+import { collection, getFirestore, onSnapshot } from "firebase/firestore";
+import app from "../../../config/firebaseConfig";
+import { toast } from "@/lib/use-toast";
+import { useSession } from "next-auth/react";
+import { File } from "@/lib/types";
 
-const files = () => {
-  const filesList = [
-    { id: 1, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-    { id: 2, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-    { id: 3, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-    { id: 4, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-    { id: 5, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-    { id: 6, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-    { id: 7, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-    { id: 8, name: "file 1", modifiedDate: "Jun 23,2024", size: "200KB" },
-  ];
+const Files = () => {
+  const [filesList, setFileList] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (!session) return;
+
+    const unsubscribe = onSnapshot(
+      collection(getFirestore(app), "files"),
+      (snapshot) => {
+        if (snapshot.empty) {
+          setIsLoading(false);
+          return;
+        }
+
+        const filesData: File[] = snapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }) as File)
+          .filter((file: File) => ( file.createdBy === session.user?.email && file.parentFolderId === null));
+        setFileList(filesData);
+        setIsLoading(false);
+      },
+      (error) => {
+        setIsLoading(false);
+        toast({
+          description: "Error fetching files:",
+          variant: "destructive",
+        });
+        console.error("Error fetching files:", error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [session]);
+
+  console.log(filesList)
 
   return (
     <section className="">
@@ -28,26 +63,32 @@ const files = () => {
           <TableRow className="flex">
             <TableHead>Name</TableHead>
             <TableHead>Modified date</TableHead>
-            <TableHead>size</TableHead>
+            <TableHead>Size</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filesList.map((file) => (
-            <TableRow key={file.id}>
-              <TableCell>
-                <div className="flex gap-3 justify-start items-center">
-                  <SiFiles />
-                  <div>{file.name}</div>
-                </div>
-              </TableCell>
-              <TableCell>{file.modifiedDate}</TableCell>
-              <TableCell>{file.size}</TableCell>
+          {filesList.length > 0 ? (
+            filesList.map((file) => (
+              <TableRow key={file.id}>
+                <TableCell>
+                  <div className="flex gap-3 justify-start items-center">
+                    <FaFileAlt />
+                    <div>{file.name}</div>
+                  </div>
+                </TableCell>
+                <TableCell>{file.modifiedAt}</TableCell>
+                <TableCell>{file.size}</TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={3}>No files found</TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </section>
   );
 };
 
-export default files;
+export default Files;

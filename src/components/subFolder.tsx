@@ -94,7 +94,7 @@ const SubFolder = () => {
         <div>
           <section className="flex justify-start items-center">
             <main className="mt-5 justify-start items-center flex flex-wrap gap-5">
-              {foldersList.map((folder) => (
+              {foldersList ? foldersList.map((folder) => (
                 <div
                   key={folder.id}
                   className="flex border-2 flex-col h-28 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center gap-3 hover:scale-105 transition-all duration-150"
@@ -107,7 +107,7 @@ const SubFolder = () => {
                     {folder.name}
                   </div>
                 </div>
-              ))}
+              )) : (<div>Folder is empty</div>)}
             </main>
           </section>
         </div>
