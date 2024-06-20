@@ -16,9 +16,8 @@ const Folders = () => {
   const { data: session } = useSession();
   const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect(() => {
 
+  useEffect(() => {
     if (!session) return;
 
     const unsubscribe = onSnapshot(
@@ -38,7 +37,11 @@ const Folders = () => {
             id: doc.id,
             ...doc.data(),
           }))
-          .filter((folder: DocumentData) => ( folder.createdBy == session.user?.email && folder.parentFolderId === null));
+          .filter(
+            (folder: DocumentData) =>
+              folder.createdBy == session.user?.email &&
+              folder.parentFolderId === null,
+          );
         if (foldersData.length > 0) {
           setFoldersList(foldersData);
         } else {

@@ -15,7 +15,7 @@ export type File = {
   createdBy: string;
   id: string;
   name: string;
-  modifiedAt: number;
+  modifedAt: number;
   size: number;
   parentFolderId: string | null;
   type: string;

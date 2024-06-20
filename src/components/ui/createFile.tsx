@@ -1,6 +1,9 @@
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+
 import { Button } from "@/components/ui/button";
 import { useDropzone } from "react-dropzone";
 import { useToast } from "@/lib/use-toast";
+
 import {
   DialogClose,
   DialogContent,
@@ -34,19 +37,30 @@ const DialogCloseButton = () => {
   const { parentFolderId, setParentFolderId } = context;
 
   const handleClick = async () => {
+    const storage = getStorage();
+    const storageRef = ref(storage, "files");
+
     try {
       if (file) {
-        const fileRef = await addDoc(collection(db, "files"), {
-          name: file.name,
-          type: file.name.split(".")[file.name.split(".").length - 1],
-          size: file.size,
-          modifedAt: file.lastModified,
-          createdBy: session?.user?.email,
-          parentFolderId: parentFolderId,
-        });
+        const uploadTask = uploadBytes(storageRef, file);
 
-        toast({ description: "Your file is uploaded." });
-        setFile(null);
+        // Show upload progress (optional)
+        uploadTask.then(async (snapshot) => {
+          const downloadURL = getDownloadURL(snapshot.ref);
+
+          const fileRef = await addDoc(collection(db, "files"), {
+            name: file.name,
+            type: file.name.split(".")[file.name.split(".").length - 1],
+            size: file.size,
+            lastModified: file.lastModified,
+            createdBy: session?.user?.email,
+            parentFolderId: parentFolderId,
+            downloadURL: downloadURL,
+          });
+
+          toast({ description: "Your file is uploaded." });
+          setFile(null);
+        });
       } else {
         toast({
           variant: "destructive",
@@ -57,6 +71,7 @@ const DialogCloseButton = () => {
       toast({ description: "Error while uploading file" });
     }
   };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     multiple: false,

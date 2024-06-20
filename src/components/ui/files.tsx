@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { FaFileAlt } from "react-icons/fa";
 import {
   Table,
@@ -33,11 +33,18 @@ const Files = () => {
         }
 
         const filesData: File[] = snapshot.docs
-          .map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }) as File)
-          .filter((file: File) => ( file.createdBy === session.user?.email && file.parentFolderId === null));
+          .map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              }) as File,
+          )
+          .filter(
+            (file: File) =>
+              file.createdBy === session.user?.email &&
+              file.parentFolderId === null,
+          );
         setFileList(filesData);
         setIsLoading(false);
       },
@@ -48,13 +55,13 @@ const Files = () => {
           variant: "destructive",
         });
         console.error("Error fetching files:", error);
-      }
+      },
     );
 
     return () => unsubscribe();
   }, [session]);
 
-  console.log(filesList)
+  console.log(filesList);
 
   return (
     <section className="">
@@ -76,7 +83,7 @@ const Files = () => {
                     <div>{file.name}</div>
                   </div>
                 </TableCell>
-                <TableCell>{file.modifiedAt}</TableCell>
+                <TableCell>{file.modifedAt}</TableCell>
                 <TableCell>{file.size}</TableCell>
               </TableRow>
             ))
