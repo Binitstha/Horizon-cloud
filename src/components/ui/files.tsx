@@ -1,68 +1,34 @@
 "use client";
 import { FaFileAlt } from "react-icons/fa";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useState, useEffect } from "react";
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
-import app from "../../../config/firebaseConfig";
-import { toast } from "@/lib/use-toast";
 import { useSession } from "next-auth/react";
-import { File } from "@/lib/types";
+import { File } from "@/types/types";
+import fileFetch from "@/lib/fileFetch";
+import { useSearchParams } from "next/navigation";
 
 const Files = () => {
   const [filesList, setFileList] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
+  const searchParams = useSearchParams()
+  // const parentFolderId = searchParams.get("id");
 
   useEffect(() => {
     if (!session) return;
 
-    const unsubscribe = onSnapshot(
-      collection(getFirestore(app), "files"),
-      (snapshot) => {
-        if (snapshot.empty) {
-          setIsLoading(false);
-          return;
-        }
+    const unsubscribe = fileFetch(session, setFileList, setIsLoading,null);
 
-        const filesData: File[] = snapshot.docs
-          .map(
-            (doc) =>
-              ({
-                id: doc.id,
-                ...doc.data(),
-              }) as File,
-          )
-          .filter(
-            (file: File) =>
-              file.createdBy === session.user?.email &&
-              file.parentFolderId === null,
-          );
-        setFileList(filesData);
-        setIsLoading(false);
-      },
-      (error) => {
-        setIsLoading(false);
-        toast({
-          description: "Error fetching files:",
-          variant: "destructive",
-        });
-        console.error("Error fetching files:", error);
-      },
-    );
-
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [session]);
 
-  console.log(filesList);
-
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <section className="">
       <Table>
@@ -83,7 +49,7 @@ const Files = () => {
                     <div>{file.name}</div>
                   </div>
                 </TableCell>
-                <TableCell>{file.modifedAt}</TableCell>
+                <TableCell>{file.lastModified}</TableCell>
                 <TableCell>{file.size}</TableCell>
               </TableRow>
             ))

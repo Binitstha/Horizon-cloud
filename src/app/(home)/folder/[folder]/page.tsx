@@ -6,9 +6,9 @@ import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import SubFolders from "@/components/subFolder";
 
-const Page = ({ params }: { params: { folder: string } }) => {
+import SubFiles from "@/components/ui/subFiles";
+const Page = () => {
   const searchParams = useSearchParams();
-  const name = params.folder; // Access dynamic route parameter
   const id = searchParams.get("id"); // Access query parameter 'id'
 
   const { parentFolderId, setParentFolderId } =

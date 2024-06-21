@@ -19,7 +19,8 @@ import {
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import Link from "next/link";
-import { File } from "@/lib/types";
+import Files from "./ui/files";
+import SubFiles from "./ui/subFiles";
 
 const SubFolder = () => {
   const router = useRouter();
@@ -35,7 +36,7 @@ const SubFolder = () => {
   const parentFolderName = pathname[pathname.length - 1];
 
   useEffect(() => {
-    const unsubscribeFolder = onSnapshot(
+    const unsubscribe = onSnapshot(
       collection(getFirestore(app), "folders"),
       (snapshot) => {
         if (snapshot.empty) {
@@ -65,32 +66,8 @@ const SubFolder = () => {
       },
     );
 
-    const unsubscribeFile = onSnapshot(
-      collection(getFirestore(app), "files"),
-      (snapshot) => {
-        const filesData: File[] = snapshot.docs
-          .map(
-            (doc) =>
-              ({
-                id: doc.id,
-                ...doc.data(),
-              }) as File,
-          )
-          .filter((files: File) => files.parentFolderId === parentFolderId);
-        setFoldersList(filesData);
-      },
-      (error) => {
-        toast({
-          description: "Error while fetching files:",
-          variant: "destructive",
-        });
-        console.error("Error while fetching files:", error);
-      },
-    );
-
     return () => {
-      unsubscribeFolder();
-      unsubscribeFile();
+      unsubscribe();
     };
   }, [session, parentFolderId]);
 
@@ -122,7 +99,7 @@ const SubFolder = () => {
         <div>
           <section className="flex justify-start items-center">
             <main className="mt-5 justify-start items-start flex flex-col flex-wrap w-full">
-              {foldersList && filesList ? (
+              {foldersList ? (
                 <>
                   <div>
                     {foldersList.map((folder) => (
@@ -140,22 +117,7 @@ const SubFolder = () => {
                       </div>
                     ))}
                   </div>
-                  <div>
-                    {filesList.map((file) => (
-                      <div
-                        key={file.id}
-                        className="flex  text-lg text-md w-full gap-2 rounded-xl cursor-pointer p-2 justify-start items-center transition-all duration-150"
-                        onClick={() => handleClick(folder.id, folder.name)}
-                      >
-                        <span className="text-2xl">
-                          <FaFolder />
-                        </span>
-                        <div className="text-ellipsis overflow-clip text-nowrap text-center">
-                          {folder.name}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <SubFiles />
                 </>
               ) : (
                 <div>Folder is empty</div>

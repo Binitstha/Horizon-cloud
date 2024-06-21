@@ -46,7 +46,7 @@ const DialogCloseButton = () => {
 
         // Show upload progress (optional)
         uploadTask.then(async (snapshot) => {
-          const downloadURL = getDownloadURL(snapshot.ref);
+          const downloadURL = await getDownloadURL(snapshot.ref);
 
           const fileRef = await addDoc(collection(db, "files"), {
             name: file.name,
