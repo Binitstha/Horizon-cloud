@@ -19,4 +19,5 @@ export type File = {
   size: number;
   parentFolderId: string | null;
   type: string;
+  downloadURL: string;
 };

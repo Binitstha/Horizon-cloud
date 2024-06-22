@@ -1,9 +1,7 @@
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-
 import { Button } from "@/components/ui/button";
 import { useDropzone } from "react-dropzone";
 import { useToast } from "@/lib/use-toast";
-
 import {
   DialogClose,
   DialogContent,
@@ -11,64 +9,59 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { useCallback, useContext, useState } from "react";
 import app from "../../../config/firebaseConfig";
 import { getFirestore, addDoc, collection } from "firebase/firestore";
 import { useSession } from "next-auth/react";
-import { toast } from "@/lib/use-toast";
 import ParentFolderContext, {
   ParentFolderContextType,
 } from "@/context/parentFolderContext";
 
 const DialogCloseButton = () => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      setFile(acceptedFiles[0]);
-    }
-  }, []);
-
   const { toast } = useToast();
   const { data: session } = useSession();
   const [file, setFile] = useState<File | null>(null);
   const db = getFirestore(app);
 
   const context = useContext<ParentFolderContextType>(ParentFolderContext);
-  const { parentFolderId, setParentFolderId } = context;
+  const { parentFolderId } = context;
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
+  }, []);
 
   const handleClick = async () => {
+    if (!file || !session?.user?.email) {
+      toast({
+        variant: "destructive",
+        description: "Empty file cannot be uploaded or user not authenticated",
+      });
+      return;
+    }
+
     const storage = getStorage();
-    const storageRef = ref(storage, "files");
+    const storageRef = ref(storage, `files/${session.user.email}/${file.name}`);
 
     try {
-      if (file) {
-        const uploadTask = uploadBytes(storageRef, file);
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
 
-        // Show upload progress (optional)
-        uploadTask.then(async (snapshot) => {
-          const downloadURL = await getDownloadURL(snapshot.ref);
+      await addDoc(collection(db, "files"), {
+        name: file.name,
+        type: file.name.split(".").pop(),
+        size: file.size,
+        lastModified: file.lastModified,
+        createdBy: session.user.email,
+        parentFolderId: parentFolderId,
+        downloadURL: downloadURL,
+      });
 
-          const fileRef = await addDoc(collection(db, "files"), {
-            name: file.name,
-            type: file.name.split(".")[file.name.split(".").length - 1],
-            size: file.size,
-            lastModified: file.lastModified,
-            createdBy: session?.user?.email,
-            parentFolderId: parentFolderId,
-            downloadURL: downloadURL,
-          });
-
-          toast({ description: "Your file is uploaded." });
-          setFile(null);
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          description: "empty file cannot be uploaded",
-        });
-      }
+      toast({ description: "Your file is uploaded." });
+      setFile(null);
     } catch (err) {
-      toast({ description: "Error while uploading file" });
+      toast({ description: "Error while uploading file", variant: "destructive" });
     }
   };
 

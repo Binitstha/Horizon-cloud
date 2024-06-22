@@ -31,4 +31,6 @@ export const querySnapshot = async (
   }
 };
 
-// export const
+export const deleteFile = () => {
+  
+}

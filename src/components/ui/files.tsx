@@ -1,23 +1,31 @@
 "use client";
 import { FaFileAlt } from "react-icons/fa";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { File } from "@/types/types";
 import fileFetch from "@/lib/fileFetch";
 import { useSearchParams } from "next/navigation";
+import moment from "moment";
 
 const Files = () => {
   const [filesList, setFileList] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   // const parentFolderId = searchParams.get("id");
 
   useEffect(() => {
     if (!session) return;
 
-    const unsubscribe = fileFetch(session, setFileList, setIsLoading,null);
+    const unsubscribe = fileFetch(session, setFileList, setIsLoading, null);
 
     return () => {
       if (unsubscribe) {
@@ -29,6 +37,10 @@ const Files = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  const handleClick = (URL: string) => {
+    window.open(URL, "_blank");
+  };
+
   return (
     <section className="">
       <Table>
@@ -46,11 +58,21 @@ const Files = () => {
                 <TableCell>
                   <div className="flex gap-3 justify-start items-center">
                     <FaFileAlt />
-                    <div>{file.name}</div>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => handleClick(file.downloadURL)}
+                    >
+                      {file.name}
+                    </div>
                   </div>
                 </TableCell>
-                <TableCell>{file.lastModified}</TableCell>
-                <TableCell>{file.size}</TableCell>
+                <TableCell>
+                  {file.lastModified &&
+                    moment(file.lastModified).format("MMMM,DD,YYYY")}
+                </TableCell>
+                <TableCell>
+                  {(file.size / 1024 ** 2).toFixed(2) + "MB"}
+                </TableCell>
               </TableRow>
             ))
           ) : (

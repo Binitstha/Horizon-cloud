@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { File } from "@/types/types";
 import fileFetch from "@/lib/fileFetch";
 import { useSearchParams } from "next/navigation";
+import moment from "moment";
 
 const Files = () => {
   const [filesList, setFileList] = useState<File[]>([]);
@@ -34,25 +35,37 @@ const Files = () => {
     return <div>Loading...</div>;
   }
 
-  const handleClick = (id: string, name: string) => {
-    console.log("heeellllllo this is file");
+  const handleClick = (URL: string, file: File) => {
+    window.open(URL, "_blank");
+    console.log(file);
   };
 
   return (
-    <section className="">
+    <section className="w-full">
       <>
         <div>
           {filesList.map((file) => (
             <div
               key={file.id}
-              className="flex text-lg text-md w-full gap-2 rounded-xl cursor-pointer p-2 justify-start items-center transition-all duration-150"
-              onClick={() => handleClick(file.id, file.name)}
+              className="flex justify-between text-lg text-md w-full gap-2 rounded-xl cursor-pointer p-2 items-center transition-all duration-150"
             >
-              <span className="text-2xl">
-                <FaFileAlt />
-              </span>
-              <div className="text-ellipsis overflow-clip text-nowrap text-center">
-                {file.name}
+              <div className="flex justify-center items-center gap-2 ">
+                <span className="text-2xl">
+                  <FaFileAlt />
+                </span>
+                <div
+                  onClick={() => handleClick(file.downloadURL, file)}
+                  className="text-ellipsis overflow-clip text-nowrap text-center  max-w-96"
+                >
+                  {file.name}
+                </div>
+              </div>
+              <div className=" flex gap-5 justify-center items-center">
+                <div>
+                  {file.lastModified &&
+                    moment(file.lastModified).format("MMMM,DD,YYYY")}
+                </div>
+                <div>{(file.size / 1024 ** 2).toFixed(2) + "MB"}</div>
               </div>
             </div>
           ))}
