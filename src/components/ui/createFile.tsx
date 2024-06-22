@@ -61,7 +61,10 @@ const DialogCloseButton = () => {
       toast({ description: "Your file is uploaded." });
       setFile(null);
     } catch (err) {
-      toast({ description: "Error while uploading file", variant: "destructive" });
+      toast({
+        description: "Error while uploading file",
+        variant: "destructive",
+      });
     }
   };
 

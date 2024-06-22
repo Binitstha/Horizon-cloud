@@ -7,9 +7,12 @@ import {
   Firestore,
   DocumentData,
   QuerySnapshot,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 import app from "../../config/firebaseConfig";
 import { unstable_noStore } from "next/cache";
+import { toast } from "./use-toast";
 
 const db = getFirestore(app);
 
@@ -31,6 +34,13 @@ export const querySnapshot = async (
   }
 };
 
-export const deleteFile = () => {
-  
-}
+export const deleteFile = async (id: string) => {
+  try {
+    const documentRef = doc(db, "files", id);
+    await deleteDoc(documentRef);
+
+    toast({ description: "Your file is deleted.", variant:'destructive' });
+  } catch (error) {
+    console.error("Error deleting document:", error);
+  }
+};
