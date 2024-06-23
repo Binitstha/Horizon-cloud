@@ -24,7 +24,7 @@ import {
   DialogTrigger,
 } from "./dialog";
 import { Button } from "./button";
-import { movetToTrash } from "@/lib/actions";
+import { movetToTrashFile } from "@/lib/actions";
 
 const Files = () => {
   const [filesList, setFileList] = useState<File[]>([]);
@@ -110,7 +110,7 @@ const Files = () => {
                         type="submit"
                         size="sm"
                         className="px-3"
-                        onClick={() => movetToTrash(file.id)}
+                        onClick={() => movetToTrashFile(file.id)}
                       >
                         <span>Move to trash</span>
                       </Button>

@@ -57,6 +57,7 @@ const Trash = () => {
   return (
     <>
       <div className=" m-10">
+        <div className="text-xl">Files</div>
         <section className="">
           <Table>
             <TableHeader>
