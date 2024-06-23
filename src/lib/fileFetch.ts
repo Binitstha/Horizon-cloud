@@ -8,7 +8,7 @@ export const fileFetch = (
   setFileList: (files: File[]) => void,
   setIsLoading: (isLoading: boolean) => void,
   parentFolderId: string | null,
-  trashFile: boolean
+  trashFile: boolean,
 ) => {
   setIsLoading(true);
   setFileList([]);
@@ -25,7 +25,8 @@ export const fileFetch = (
         )
         .filter(
           (file: File) =>
-            file.createdBy === session.user?.email && file.trashFile == trashFile &&
+            file.createdBy === session.user?.email &&
+            file.trashFile == trashFile &&
             (parentFolderId ? file.parentFolderId === parentFolderId : true),
         )
         .sort((a, b) => {

@@ -11,6 +11,16 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "@/lib/use-toast";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";
+import { MdDelete } from "react-icons/md";
+import { Button } from "./button";
 
 const Folders = () => {
   const { data: session } = useSession();
@@ -79,7 +89,7 @@ const Folders = () => {
           foldersList.map((folder) => (
             <div
               key={folder.id}
-              className="flex border-2 flex-col h-28 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center gap-3 hover:scale-105 transition-all duration-150"
+              className="flex relative border-2 flex-col h-28 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center gap-3 hover:scale-105 transition-all duration-150"
               onClick={() => handleClick(folder.id, folder.name)}
             >
               <span className="text-5xl">
@@ -87,6 +97,32 @@ const Folders = () => {
               </span>
               <div className="text-ellipsis w-32 overflow-clip text-nowrap text-center">
                 {folder.name}
+              </div>
+              <div onClick={(e)=> e.stopPropagation()} className="absolute right-1 top-0 h-10 w-9 text-2xl flex justify-center items-start">
+                <Dialog>
+                  <DialogTrigger>
+                      <span>.</span>
+                      <span>.</span>
+                      <span>.</span>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                      <DialogDescription>
+                      This will move the file {folder.name} to the trash. You
+                      can still recover it later.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      className="px-3"
+                      // onClick={() => deleteFile(file.id)}
+                    >
+                      <span>Move to trash</span>
+                    </Button>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           ))

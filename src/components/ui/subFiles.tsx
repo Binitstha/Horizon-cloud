@@ -3,7 +3,7 @@ import { FaFileAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { File } from "@/types/types";
-import {fileFetch} from "@/lib/fileFetch";
+import { fileFetch } from "@/lib/fileFetch";
 import { useSearchParams } from "next/navigation";
 import moment from "moment";
 import { MdDelete } from "react-icons/md";
@@ -27,14 +27,14 @@ const Files = () => {
   const parentFolderId = searchParams.get("id");
   useEffect(() => {
     if (!session) return;
-    const trashFile = false
+    const trashFile = false;
 
     const unsubscribe = fileFetch(
       session,
       setFileList,
       setIsLoading,
       parentFolderId,
-      trashFile
+      trashFile,
     );
 
     return () => {

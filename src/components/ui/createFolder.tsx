@@ -39,6 +39,8 @@ const DialogCloseButton = () => {
           name: folderName,
           createdBy: session?.user?.email,
           parentFolderId: parentFolderId,
+          starred: false,
+          trashFolder: false,
         });
 
         toast({ description: "Your folder is created." });

@@ -9,6 +9,8 @@ export type folder = {
   id: string;
   name: string;
   createdBy: string;
+  starred: boolean;
+  trashFolder: boolean;
 };
 
 export type File = {

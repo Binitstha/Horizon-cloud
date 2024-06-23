@@ -35,7 +35,7 @@ const Files = () => {
 
   useEffect(() => {
     if (!session) return;
-    const trashFile = false;  
+    const trashFile = false;
 
     const unsubscribe = fileFetch(
       session,
@@ -102,8 +102,8 @@ const Files = () => {
                       <DialogHeader>
                         <DialogTitle>Are you absolutely sure?</DialogTitle>
                         <DialogDescription>
-                        This will move the file {file.name} to the trash.
-                              You can still recover it later.
+                          This will move the file {file.name} to the trash. You
+                          can still recover it later.
                         </DialogDescription>
                       </DialogHeader>
                       <Button

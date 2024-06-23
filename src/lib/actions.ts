@@ -61,6 +61,18 @@ export const deleteFile = async (id: string) => {
   }
 };
 
+export const restoreFile = async (id: string) => {
+  try {
+    const fileRef = doc(db, "files", id);
+    await updateDoc(fileRef, { trashFile: false });
+
+    toast({ description: "File successfully moved to trash." });
+    console.log("Successfull");
+  } catch (err) {
+    console.log("errr", err);
+  }
+};
+
 export const trashFiles = async (
   session: any,
   setFileList: (files: File[]) => void,
