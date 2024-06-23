@@ -20,4 +20,5 @@ export type File = {
   parentFolderId: string | null;
   type: string;
   downloadURL: string;
+  trashFile: boolean;
 };

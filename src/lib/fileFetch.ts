@@ -3,11 +3,12 @@ import app from "../../config/firebaseConfig";
 import { File } from "../types/types";
 import { toast } from "./use-toast";
 
-const fileFetch = (
+export const fileFetch = (
   session: any,
   setFileList: (files: File[]) => void,
   setIsLoading: (isLoading: boolean) => void,
   parentFolderId: string | null,
+  trashFile: boolean
 ) => {
   setIsLoading(true);
   setFileList([]);
@@ -24,7 +25,7 @@ const fileFetch = (
         )
         .filter(
           (file: File) =>
-            file.createdBy === session.user?.email &&
+            file.createdBy === session.user?.email && file.trashFile == trashFile &&
             (parentFolderId ? file.parentFolderId === parentFolderId : true),
         )
         .sort((a, b) => {
@@ -46,5 +47,3 @@ const fileFetch = (
     },
   );
 };
-
-export default fileFetch;

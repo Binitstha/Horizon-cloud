@@ -11,7 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { File } from "@/types/types";
-import fileFetch from "@/lib/fileFetch";
+import { fileFetch } from "@/lib/fileFetch";
 import { useSearchParams } from "next/navigation";
 import moment from "moment";
 import { MdDelete } from "react-icons/md";
@@ -24,7 +24,7 @@ import {
   DialogTrigger,
 } from "./dialog";
 import { Button } from "./button";
-import { deleteFile } from "@/lib/actions";
+import { movetToTrash } from "@/lib/actions";
 
 const Files = () => {
   const [filesList, setFileList] = useState<File[]>([]);
@@ -35,8 +35,15 @@ const Files = () => {
 
   useEffect(() => {
     if (!session) return;
+    const trashFile = false;  
 
-    const unsubscribe = fileFetch(session, setFileList, setIsLoading, null);
+    const unsubscribe = fileFetch(
+      session,
+      setFileList,
+      setIsLoading,
+      null,
+      trashFile,
+    );
 
     return () => {
       if (unsubscribe) {
@@ -95,15 +102,15 @@ const Files = () => {
                       <DialogHeader>
                         <DialogTitle>Are you absolutely sure?</DialogTitle>
                         <DialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your file from our servers.
+                        This will move the file {file.name} to the trash.
+                              You can still recover it later.
                         </DialogDescription>
                       </DialogHeader>
                       <Button
                         type="submit"
                         size="sm"
                         className="px-3"
-                        onClick={()=>deleteFile(file.id)}
+                        onClick={() => movetToTrash(file.id)}
                       >
                         <span>Move to trash</span>
                       </Button>

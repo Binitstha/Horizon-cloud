@@ -3,11 +3,19 @@ import { FaFileAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { File } from "@/types/types";
-import fileFetch from "@/lib/fileFetch";
+import {fileFetch} from "@/lib/fileFetch";
 import { useSearchParams } from "next/navigation";
-import moment from "moment";import { MdDelete } from "react-icons/md";
+import moment from "moment";
+import { MdDelete } from "react-icons/md";
 import { deleteFile } from "@/lib/actions";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";
 import { Button } from "./button";
 
 const Files = () => {
@@ -19,12 +27,14 @@ const Files = () => {
   const parentFolderId = searchParams.get("id");
   useEffect(() => {
     if (!session) return;
+    const trashFile = false
 
     const unsubscribe = fileFetch(
       session,
       setFileList,
       setIsLoading,
       parentFolderId,
+      trashFile
     );
 
     return () => {
@@ -70,29 +80,29 @@ const Files = () => {
                 </div>
                 <div>{(file.size / 1024 ** 2).toFixed(2) + "MB"}</div>
                 <Dialog>
-                    <DialogTrigger>
-                      <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
-                        <MdDelete />
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
-                        <DialogDescription>
-                          This action cannot be undone. This will temporaryly
-                          delete your file from our servers.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <Button
-                        type="submit"
-                        size="sm"
-                        className="px-3"
-                        onClick={()=>deleteFile(file.id)}
-                      >
-                        <span>Move to trash</span>
-                      </Button>
-                    </DialogContent>
-                  </Dialog>
+                  <DialogTrigger>
+                    <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
+                      <MdDelete />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                      <DialogDescription>
+                        This action cannot be undone. This will temporaryly
+                        delete your file from our servers.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      className="px-3"
+                      onClick={() => deleteFile(file.id)}
+                    >
+                      <span>Move to trash</span>
+                    </Button>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           ))}

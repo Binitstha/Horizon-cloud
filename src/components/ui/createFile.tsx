@@ -56,6 +56,7 @@ const DialogCloseButton = () => {
         createdBy: session.user.email,
         parentFolderId: parentFolderId,
         downloadURL: downloadURL,
+        trashFile: false,
       });
 
       toast({ description: "Your file is uploaded." });
