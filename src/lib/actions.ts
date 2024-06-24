@@ -119,7 +119,10 @@ const deleteFolderRecursively = async (id: string) => {
   await deleteDoc(doc(db, "folders", id));
 };
 
-export const deleteFolder = async (id: string, setFoldersList: Dispatch<SetStateAction<DocumentData[]>>) => {
+export const deleteFolder = async (
+  id: string,
+  setFoldersList: Dispatch<SetStateAction<DocumentData[]>>,
+) => {
   try {
     const documentRef = doc(db, "folders", id);
     const folderDoc = await getDoc(documentRef);

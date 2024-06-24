@@ -16,9 +16,9 @@ const NavLinks = () => {
       href: "/",
     },
     {
-      name: "My files",
+      name: "My folders",
       icon: <MdFolderShared />,
-      href: "/myFiles",
+      href: "/myFolders",
     },
     {
       name: "Starred",

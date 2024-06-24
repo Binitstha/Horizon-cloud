@@ -1,7 +1,15 @@
+import UserProfile from "./ui/userProfile";
+import StorageInfo from "./ui/storageInformation";
+
 const storage = () => {
   return (
-    <div className="sticky top-0 flex justify-center items-center h-screen">
-      storage
+    <div className="h-screen flex flex-col gap-10 p-5 sticky top-0">
+      <div className=" flex justify-center items-start ">
+        <UserProfile />
+      </div>
+      <div className="border-2">
+      <StorageInfo />
+      </div>
     </div>
   );
 };

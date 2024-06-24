@@ -141,7 +141,9 @@ const Folders = () => {
                           type="submit"
                           size="sm"
                           className="px-3 bg-red-600"
-                          onClick={() => deleteFolder(folder.id,setFoldersList)}
+                          onClick={() =>
+                            deleteFolder(folder.id, setFoldersList)
+                          }
                         >
                           <span className="">Delete</span>
                         </Button>
