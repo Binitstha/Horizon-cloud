@@ -7,8 +7,8 @@ const storage = () => {
       <div className=" flex justify-center items-start ">
         <UserProfile />
       </div>
-      <div className="border-2">
-      <StorageInfo />
+      <div className="">
+        <StorageInfo />
       </div>
     </div>
   );

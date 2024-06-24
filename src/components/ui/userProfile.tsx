@@ -21,7 +21,7 @@ const UserProfile = () => {
         <div>{session?.user?.email}</div>
       </div>
       <div className="flex text-3xl w-14 cursor-pointer justify-end items-center">
-        <div onClick={()=>signOut()}>
+        <div onClick={() => signOut()}>
           <IoIosLogOut />
         </div>
       </div>
