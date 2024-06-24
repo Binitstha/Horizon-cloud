@@ -64,7 +64,9 @@ const SubFolder = () => {
             ...doc.data(),
           }))
           .filter(
-            (folder: DocumentData) => folder.parentFolderId === parentFolderId && folder.trashFolder == false,
+            (folder: DocumentData) =>
+              folder.parentFolderId === parentFolderId &&
+              folder.trashFolder == false,
           );
         setFoldersList(foldersData);
       },

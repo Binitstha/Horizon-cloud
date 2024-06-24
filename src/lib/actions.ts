@@ -11,11 +11,14 @@ import {
   deleteDoc,
   onSnapshot,
   updateDoc,
+  getDoc,
+  writeBatch,
 } from "firebase/firestore";
 import app from "../../config/firebaseConfig";
 import { unstable_noStore } from "next/cache";
 import { toast } from "./use-toast";
 import { File } from "@/types/types";
+import { Dispatch, SetStateAction } from "react";
 
 const db: Firestore = getFirestore(app);
 
@@ -63,31 +66,94 @@ export const deleteFile = async (id: string) => {
   }
 };
 
-export const deleteFolder = async (id: string) => {
+export const movetToTrashFolder = async (id: string) => {
   try {
-    const documentRef = doc(db, "folders", id);
-    await deleteDoc(documentRef);
+    const folderRef = doc(db, "folders", id);
+    await updateDoc(folderRef, { trashFolder: true });
 
-    toast({ description: "Your folder is deleted.", variant: "destructive" });
-  } catch (error) {
+    const fileQuery = query(
+      collection(db, "files"),
+      where("parentFolderId", "==", id),
+    );
+    const filesSnapshot = await getDocs(fileQuery);
+
+    filesSnapshot.forEach(async (fileDoc) => {
+      await updateDoc(doc(db, "files", fileDoc.id), { trashFile: true });
+    });
+    toast({ description: "Folder successfully moved to trash." });
+  } catch (err) {
     toast({
-      description: "Error while moving file to trash",
+      description: "Error while moving folder to trash",
       variant: "destructive",
     });
   }
 };
 
-export const movetToTrashFolder = async (id: string) => {
-  try {
-    const parentFolderId = id;
-    const folderRef = doc(db, "folders", id);
-    const fileRef = doc(db, "files", parentFolderId);
-    await updateDoc(folderRef, { trashFolder: true });
+const deleteFolderRecursively = async (id: string) => {
+  const subfolderQuery = query(
+    collection(db, "folders"),
+    where("parentFolderId", "==", id),
+  );
+  const subfolderSnapshot = await getDocs(subfolderQuery);
 
-    toast({ description: "Folder successfully moved to trash." });
-  } catch (err) {
+  const deleteSubfolderPromises = subfolderSnapshot.docs.map(
+    async (subfolderDoc) => {
+      await deleteFolderRecursively(subfolderDoc.id);
+    },
+  );
+
+  await Promise.all(deleteSubfolderPromises);
+
+  const fileQuery = query(
+    collection(db, "files"),
+    where("parentFolderId", "==", id),
+  );
+  const filesSnapshot = await getDocs(fileQuery);
+
+  const deleteFilePromises = filesSnapshot.docs.map(async (fileDoc) => {
+    await deleteDoc(doc(db, "files", fileDoc.id));
+  });
+
+  await Promise.all(deleteFilePromises);
+
+  await deleteDoc(doc(db, "folders", id));
+};
+
+export const deleteFolder = async (id: string, setFoldersList: Dispatch<SetStateAction<DocumentData[]>>) => {
+  try {
+    const documentRef = doc(db, "folders", id);
+    const folderDoc = await getDoc(documentRef);
+
+    if (!folderDoc.exists()) {
+      toast({ description: "Folder does not exist.", variant: "destructive" });
+      return;
+    }
+
+    const parentFolderId = folderDoc.data().parentFolderId;
+    if (parentFolderId) {
+      const parentFolderRef = doc(db, "folders", parentFolderId);
+      const parentFolderDoc = await getDoc(parentFolderRef);
+
+      if (parentFolderDoc.exists()) {
+        toast({
+          description:
+            "Cannot delete folder as it has a corresponding parent folder.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    await deleteFolderRecursively(id);
+
+    setFoldersList((prevFolders) =>
+      prevFolders.filter((folder) => folder.id !== id),
+    );
+    toast({ description: "Your folder is deleted.", variant: "destructive" });
+  } catch (error) {
+    console.error("Error while deleting folder:", error);
     toast({
-      description: "Error while moving folder to trash",
+      description: "Error while moving file to trash",
       variant: "destructive",
     });
   }
@@ -175,7 +241,6 @@ export const starFolder = async (id: string) => {
   try {
     const fileRef = doc(db, "folders", id);
     await updateDoc(fileRef, { starred: true });
-
   } catch (err) {
     console.log("errr", err);
   }
@@ -184,7 +249,6 @@ export const removeStarFolder = async (id: string) => {
   try {
     const fileRef = doc(db, "folders", id);
     await updateDoc(fileRef, { starred: false });
-
   } catch (err) {
     console.log("errr", err);
   }

@@ -51,7 +51,7 @@ const Folders = () => {
           .filter(
             (folder: DocumentData) =>
               folder.createdBy == session.user?.email &&
-              folder.trashFolder == true
+              folder.trashFolder == true,
           );
         if (foldersData.length > 0) {
           setFoldersList(foldersData);
@@ -69,7 +69,6 @@ const Folders = () => {
         console.error("Error fetching folders:", error);
       },
     );
-
     return () => unsubscribe();
   }, [session]);
 
@@ -142,7 +141,7 @@ const Folders = () => {
                           type="submit"
                           size="sm"
                           className="px-3 bg-red-600"
-                          onClick={() => deleteFolder(folder.id)}
+                          onClick={() => deleteFolder(folder.id,setFoldersList)}
                         >
                           <span className="">Delete</span>
                         </Button>
