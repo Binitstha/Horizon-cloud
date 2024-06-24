@@ -1,11 +1,11 @@
 import TrashFiles from "./trashFiles";
-import TrashFolders from './trashFolder'
+import TrashFolders from "./trashFolder";
 
 const Page = () => {
   return (
     <>
       <div className=" m-10">
-        <TrashFolders/>
+        <TrashFolders />
         <TrashFiles />
       </div>
     </>

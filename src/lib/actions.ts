@@ -79,31 +79,33 @@ export const deleteFolder = async (id: string) => {
 
 export const movetToTrashFolder = async (id: string) => {
   try {
+    const parentFolderId = id;
     const folderRef = doc(db, "folders", id);
+    const fileRef = doc(db, "files", parentFolderId);
     await updateDoc(folderRef, { trashFolder: true });
 
     toast({ description: "Folder successfully moved to trash." });
   } catch (err) {
-    toast({  
+    toast({
       description: "Error while moving folder to trash",
       variant: "destructive",
     });
   }
 };
 
-export const restoreFolder = async (id:string)=> {
+export const restoreFolder = async (id: string) => {
   try {
     const folderRef = doc(db, "folders", id);
     await updateDoc(folderRef, { trashFolder: false });
 
     toast({ description: "Folder successfully restored." });
   } catch (err) {
-    toast({  
+    toast({
       description: "Error while restoring folder.",
       variant: "destructive",
     });
   }
-}
+};
 
 export const restoreFile = async (id: string) => {
   try {
@@ -166,5 +168,24 @@ export const trashFiles = async (
     );
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const starFolder = async (id: string) => {
+  try {
+    const fileRef = doc(db, "folders", id);
+    await updateDoc(fileRef, { starred: true });
+
+  } catch (err) {
+    console.log("errr", err);
+  }
+};
+export const removeStarFolder = async (id: string) => {
+  try {
+    const fileRef = doc(db, "folders", id);
+    await updateDoc(fileRef, { starred: false });
+
+  } catch (err) {
+    console.log("errr", err);
   }
 };

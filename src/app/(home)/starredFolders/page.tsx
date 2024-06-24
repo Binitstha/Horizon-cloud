@@ -1,17 +1,16 @@
 "use client";
+import { FaStar } from "react-icons/fa6";
 import {
   getFirestore,
   DocumentData,
   collection,
   onSnapshot,
 } from "firebase/firestore";
-import { FaFolder, FaTrashRestore } from "react-icons/fa";
+import { FaFolder, FaRegStar } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "@/lib/use-toast";
 import { useRouter } from "next/navigation";
-import { deleteFolder, movetToTrashFolder, restoreFolder } from "@/lib/actions";
-import app from "../../../../config/firebaseConfig";
 import {
   Dialog,
   DialogContent,
@@ -20,8 +19,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { MdDelete } from "react-icons/md";
+import {
+  movetToTrashFolder,
+  removeStarFolder,
+  starFolder,
+} from "@/lib/actions";
+import app from "../../../../config/firebaseConfig";
+import { Button } from "@/components/ui/button";
 
 const Folders = () => {
   const { data: session } = useSession();
@@ -51,7 +56,8 @@ const Folders = () => {
           .filter(
             (folder: DocumentData) =>
               folder.createdBy == session.user?.email &&
-              folder.trashFolder == true
+              folder.trashFolder == false &&
+              folder.starred === true,
           );
         if (foldersData.length > 0) {
           setFoldersList(foldersData);
@@ -73,22 +79,30 @@ const Folders = () => {
     return () => unsubscribe();
   }, [session]);
 
+  const router = useRouter();
+  const handleClick = (id: string, name: string) => {
+    router.push(`/folder/${name}?id=${id}`);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>; // Add a loading state to handle asynchronous fetch
   }
 
   return (
-    <div className="m-10">
-      <div className="text-xl">Folders</div>
-      <section className="flex justify-start items-center">
+    <div className=" m-12">
+      <div className="text-xl">Starred folders</div>
+      <section className=" flex justify-start items-center">
         <main className="mt-5 justify-start items-center flex flex-wrap gap-5">
           {foldersList.length > 0 ? (
             foldersList.map((folder) => (
               <div
                 key={folder.id}
-                className="flex flex-col border-2 h-28 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
+                className="flex flex-col gap-2 border-2 h-32 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
               >
-                <div className="flex flex-col justify-center items-center">
+                <div
+                  className="flex flex-col justify-center items-center"
+                  onClick={() => handleClick(folder.id, folder.name)}
+                >
                   <span className="text-5xl">
                     <FaFolder />
                   </span>
@@ -100,33 +114,7 @@ const Folders = () => {
                   <div className="flex justify-center items-center">
                     <Dialog>
                       <DialogTrigger>
-                        <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
-                          <FaTrashRestore />
-                        </div>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you absolutely sure?</DialogTitle>
-                          <DialogDescription>
-                            This will restore the folder {folder.name} from
-                            trash.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <Button
-                          type="submit"
-                          size="sm"
-                          className="px-3"
-                          onClick={() => restoreFolder(folder.id)}
-                        >
-                          <span>Restore</span>
-                        </Button>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                  <div className="flex justify-center items-center">
-                    <Dialog>
-                      <DialogTrigger>
-                        <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
+                        <div className="flex justify-center items-center cursor-pointer text-2xl">
                           <MdDelete />
                         </div>
                       </DialogTrigger>
@@ -134,20 +122,31 @@ const Folders = () => {
                         <DialogHeader>
                           <DialogTitle>Are you absolutely sure?</DialogTitle>
                           <DialogDescription>
-                            This will delete the folder {folder.name}{" "}
-                            permanently from trash.
+                            This will move the file {folder.name} to the trash.
+                            You can still recover it later.
                           </DialogDescription>
                         </DialogHeader>
                         <Button
                           type="submit"
                           size="sm"
-                          className="px-3 bg-red-600"
-                          onClick={() => deleteFolder(folder.id)}
+                          className="px-3"
+                          onClick={() => movetToTrashFolder(folder.id)}
                         >
-                          <span className="">Delete</span>
+                          <span>Move to trash</span>
                         </Button>
                       </DialogContent>
                     </Dialog>
+                  </div>
+                  <div>
+                    {folder.starred ? (
+                      <div onClick={() => removeStarFolder(folder.id)}>
+                        <FaStar />
+                      </div>
+                    ) : (
+                      <div onClick={() => starFolder(folder.id)}>
+                        <FaRegStar />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

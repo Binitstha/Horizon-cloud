@@ -23,7 +23,7 @@ const NavLinks = () => {
     {
       name: "Starred",
       icon: <MdFolderSpecial />,
-      href: "/starred",
+      href: "/starredFolders",
     },
     {
       name: "Trash",

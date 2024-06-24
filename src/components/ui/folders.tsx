@@ -1,11 +1,12 @@
 "use client";
+import { FaStar } from "react-icons/fa6";
 import {
   getFirestore,
   DocumentData,
   collection,
   onSnapshot,
 } from "firebase/firestore";
-import { FaFolder } from "react-icons/fa";
+import { FaFolder, FaRegStar } from "react-icons/fa";
 import app from "../../../config/firebaseConfig";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -21,7 +22,11 @@ import {
 } from "./dialog";
 import { MdDelete } from "react-icons/md";
 import { Button } from "./button";
-import { movetToTrashFolder } from "@/lib/actions";
+import {
+  movetToTrashFolder,
+  removeStarFolder,
+  starFolder,
+} from "@/lib/actions";
 import { DialogClose } from "@radix-ui/react-dialog";
 
 const Folders = () => {
@@ -51,7 +56,8 @@ const Folders = () => {
           }))
           .filter(
             (folder: DocumentData) =>
-              folder.createdBy == session.user?.email && folder.trashFolder == false && 
+              folder.createdBy == session.user?.email &&
+              folder.trashFolder == false &&
               folder.parentFolderId === null,
           );
         if (foldersData.length > 0) {
@@ -90,7 +96,7 @@ const Folders = () => {
           foldersList.map((folder) => (
             <div
               key={folder.id}
-              className="flex flex-col border-2 h-32 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
+              className="flex flex-col gap-2 border-2 h-32 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
             >
               <div
                 className="flex flex-col justify-center items-center"
@@ -107,7 +113,7 @@ const Folders = () => {
                 <div className="flex justify-center items-center">
                   <Dialog>
                     <DialogTrigger>
-                      <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
+                      <div className="flex justify-center items-center cursor-pointer text-2xl">
                         <MdDelete />
                       </div>
                     </DialogTrigger>
@@ -130,7 +136,17 @@ const Folders = () => {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <div>s</div>
+                <div>
+                  {folder.starred ? (
+                    <div onClick={() => removeStarFolder(folder.id)}>
+                      <FaStar />
+                    </div>
+                  ) : (
+                    <div onClick={() => starFolder(folder.id)}>
+                      <FaRegStar />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ))
