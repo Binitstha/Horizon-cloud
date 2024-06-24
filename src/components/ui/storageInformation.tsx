@@ -32,10 +32,12 @@ const StorageInfo = () => {
     if (session?.user?.email) {
       const email = session.user.email;
 
-      // Define the query to fetch files belonging to the current user
-      const q = query(collection(db, "files"), where("createdBy", "==", email));
+      const q = query(
+        collection(db, "files"),
+        where("createdBy", "==", email),
+        where("trashFile", "==", false),
+      );
 
-      // Subscribe to changes in the query results using onSnapshot
       const unsubscribe = onSnapshot(q, (snapshot) => {
         let totalSize = 0;
         let imageCount = 0;
@@ -47,11 +49,10 @@ const StorageInfo = () => {
         let documentSize = 0;
         let othersSize = 0;
 
-        // Iterate through each document in the snapshot
         snapshot.forEach((doc) => {
           const data = doc.data();
           if (data.size) {
-            totalSize += data.size; // Accumulate total size
+            totalSize += data.size;
           }
 
           if (data.type && data.size) {
@@ -61,32 +62,31 @@ const StorageInfo = () => {
               case "png":
               case "jpg":
                 imageCount++;
-                imageSize += data.size; // Accumulate image size
+                imageSize += data.size;
                 break;
               case "webm":
               case "mp4":
               case "avi":
               case "mkv":
                 videoCount++;
-                videoSize += data.size; // Accumulate video size
+                videoSize += data.size;
                 break;
               case "pdf":
               case "doc":
               case "docx":
               case "txt":
                 documentCount++;
-                documentSize += data.size; // Accumulate document size
+                documentSize += data.size;
                 break;
               default:
                 othersCount++;
-                othersSize += data.size; // Accumulate size for other types
+                othersSize += data.size;
                 break;
             }
           }
         });
 
-        // Update state with calculated values
-        setFileSize(totalSize / (1024 * 1024)); // Convert to MB
+        setFileSize(totalSize / (1024 * 1024));
 
         setTotalImages(imageCount);
         setTotalVideos(videoCount);
@@ -99,31 +99,29 @@ const StorageInfo = () => {
         setTotalOtherSize(othersSize / (1024 * 1024));
       });
 
-      // Clean up listener on component unmount
       return () => unsubscribe();
     }
-  }, [session]); // Dependency array ensures effect runs when session changes
+  }, [session]);
 
   return (
     <main>
       <section>
         <div className="text-xl">{fileSize.toFixed(2)} MB of 50 MB used</div>
-        {/* Progress bar section */}
         <div className="my-4 w-full h-3 border-2 flex">
           <div
-            style={{ width: `${(totalImages/50) * 100}%` }}
+            style={{ width: `${(totalImages / 50) * 100}%` }}
             className="bg-green-300"
           ></div>
           <div
-            style={{ width: `${(totalVideos/50) * 100}%` }}
+            style={{ width: `${(totalVideos / 50) * 100}%` }}
             className="bg-blue-300"
           ></div>
           <div
-            style={{ width: `${(totalDocuments/50) * 100}%` }}
+            style={{ width: `${(totalDocuments / 50) * 100}%` }}
             className="bg-yellow-300"
           ></div>
           <div
-            style={{ width: `${(totalOthers/50) * 100}%` }}
+            style={{ width: `${(totalOthers / 50) * 100}%` }}
             className="bg-red-300"
           ></div>
         </div>
