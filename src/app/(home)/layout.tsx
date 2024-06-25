@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import LoginPage from "@/components/login";
 import CircularIndeterminate from "@/components/ui/loadingProgress";
 import { useSession } from "next-auth/react";

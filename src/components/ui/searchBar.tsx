@@ -67,7 +67,7 @@ export default function FreeSolo() {
       router.push(`/folder/${selectedFolder.name}?id=${selectedFolder.id}`);
       console.log(selectedFolder.name);
     } else {
-      router.push(`/folder/${data.search}`)
+      router.push(`/folder/${data.search}`);
     }
   };
 

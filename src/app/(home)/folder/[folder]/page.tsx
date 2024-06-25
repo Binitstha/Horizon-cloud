@@ -5,6 +5,7 @@ import ParentFolderContext, {
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import SubFolders from "@/components/subFolder";
+import NotFound from "./notFound";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -22,8 +23,13 @@ const Page = () => {
   }, [id, setParentFolderId]);
 
   if (!parentFolderId) {
-    return <div>loading....</div>;
+    return (
+      <div>
+        <NotFound />
+      </div>
+    );
   }
+
   return (
     <>
       <div>
