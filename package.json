@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "firebase": "^10.12.2",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.390.0",
     "moment": "^2.30.1",
     "mui": "^0.0.1",
@@ -29,11 +30,13 @@
     "react": "^18",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.52.0",
     "react-icons": "^5.2.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

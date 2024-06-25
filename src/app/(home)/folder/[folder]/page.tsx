@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import SubFolders from "@/components/subFolder";
 
-import SubFiles from "@/components/ui/subFiles";
 const Page = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id"); // Access query parameter 'id'
