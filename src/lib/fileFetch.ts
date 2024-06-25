@@ -9,13 +9,14 @@ export const fileFetch = (
   setIsLoading: (isLoading: boolean) => void,
   parentFolderId: string | null,
   trashFile: boolean,
+  limit: boolean
 ) => {
   setIsLoading(true);
   setFileList([]);
   return onSnapshot(
     collection(getFirestore(app), "files"),
     (snapshot) => {
-      const filesData: File[] = snapshot.docs
+      let filesData: File[] = snapshot.docs
         .map(
           (doc) =>
             ({
@@ -26,7 +27,7 @@ export const fileFetch = (
         .filter(
           (file: File) =>
             file.createdBy === session.user?.email &&
-            file.trashFile == trashFile &&
+            file.trashFile === trashFile &&
             (parentFolderId ? file.parentFolderId === parentFolderId : true),
         )
         .sort((a, b) => {
@@ -34,6 +35,10 @@ export const fileFetch = (
           const dateB = b.lastModified ? new Date(b.lastModified).getTime() : 0;
           return dateA - dateB;
         });
+
+      if (limit) {
+        filesData = filesData.slice(0, 5); // Apply limit to 5 files
+      }
 
       setFileList(filesData);
       setIsLoading(false);

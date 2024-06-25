@@ -29,7 +29,7 @@ import {
 } from "@/lib/actions";
 import { DialogClose } from "@radix-ui/react-dialog";
 
-const Folders = () => {
+const Folders = ({ viewAll }: { viewAll: boolean }) => {
   const { data: session } = useSession();
   const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +37,7 @@ const Folders = () => {
   useEffect(() => {
     if (!session) return;
 
+    const limit = viewAll ? true : false;
     const unsubscribe = onSnapshot(
       collection(getFirestore(app), "folders"),
       (snapshot) => {
@@ -49,7 +50,7 @@ const Folders = () => {
           return;
         }
 
-        const foldersData = snapshot.docs
+        let foldersData = snapshot.docs
           .map((doc) => ({
             id: doc.id,
             ...doc.data(),
@@ -61,6 +62,7 @@ const Folders = () => {
               folder.parentFolderId === null,
           );
         if (foldersData.length > 0) {
+          if(limit) {foldersData = foldersData.slice(0,10)}
           setFoldersList(foldersData);
         } else {
           setFoldersList([]);
@@ -78,7 +80,7 @@ const Folders = () => {
     );
 
     return () => unsubscribe();
-  }, [session]);
+  }, [session, viewAll]);
 
   const router = useRouter();
   const handleClick = (id: string, name: string) => {

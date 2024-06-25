@@ -26,16 +26,15 @@ import {
 import { Button } from "./button";
 import { movetToTrashFile } from "@/lib/actions";
 
-const Files = () => {
+const Files = ({ viewAll }: { viewAll: boolean }) => {
   const [filesList, setFileList] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  // const parentFolderId = searchParams.get("id");
 
   useEffect(() => {
     if (!session) return;
     const trashFile = false;
+    const limit = viewAll ? true: false;
 
     const unsubscribe = fileFetch(
       session,
@@ -43,6 +42,7 @@ const Files = () => {
       setIsLoading,
       null,
       trashFile,
+      limit,
     );
 
     return () => {
@@ -50,7 +50,7 @@ const Files = () => {
         unsubscribe();
       }
     };
-  }, [session]);
+  }, [session,viewAll]);
 
   if (isLoading) {
     return <div>Loading...</div>;
