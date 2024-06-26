@@ -118,7 +118,7 @@ export default function FreeSolo() {
                         ...params.InputProps,
                         startAdornment: (
                           <InputAdornment position="start">
-                            <FaSearch  className="lg:text-lg text-sm"/>
+                            <FaSearch className="lg:text-lg text-sm" />
                           </InputAdornment>
                         ),
                       }}

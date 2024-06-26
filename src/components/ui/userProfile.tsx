@@ -24,7 +24,9 @@ const UserProfile = () => {
           />
         </div>
         <div className="flex lg:flex-col flex-row justify-start items-start gap-0 w-full">
-          <div className="text-center lg:w-auto w-14 text-ellipsis overflow-hidden whitespace-nowrap lg:text-base text-sm">{session?.user?.name}</div>
+          <div className="text-center lg:w-auto w-14 text-ellipsis overflow-hidden whitespace-nowrap lg:text-base text-sm">
+            {session?.user?.name}
+          </div>
           <div className="text-center sm:text-left text-sm lg:inline hidden">
             {session?.user?.email}
           </div>

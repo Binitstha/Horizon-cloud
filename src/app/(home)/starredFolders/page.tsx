@@ -98,7 +98,7 @@ const Folders = () => {
               <div
                 key={folder.id}
                 className="flex flex-col gap-2 border-2 lg:h-32 lg:w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
-            >
+              >
                 <div
                   className="flex flex-col justify-center items-center"
                   onClick={() => handleClick(folder.id, folder.name)}

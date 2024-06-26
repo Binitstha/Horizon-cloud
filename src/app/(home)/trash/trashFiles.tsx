@@ -76,7 +76,9 @@ const Trash = () => {
                     <TableCell>
                       <div className="flex gap-3 justify-start items-center">
                         <FaFileAlt />
-                        <div className="cursor-pointer lg:w-96 w-32  overflow-hidden h-6 text-ellipsis whitespace-nowrap">{file.name}</div>
+                        <div className="cursor-pointer lg:w-96 w-32  overflow-hidden h-6 text-ellipsis whitespace-nowrap">
+                          {file.name}
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>

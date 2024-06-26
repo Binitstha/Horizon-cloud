@@ -142,7 +142,7 @@ const Folders = ({ viewAll }: { viewAll: boolean }) => {
                 <div className="lg:text-2xl text-lg">
                   {folder.starred ? (
                     <div onClick={() => removeStarFolder(folder.id)}>
-                      <FaStar className=""/>
+                      <FaStar className="" />
                     </div>
                   ) : (
                     <div onClick={() => starFolder(folder.id)}>

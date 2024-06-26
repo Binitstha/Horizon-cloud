@@ -15,6 +15,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 const metadata: Metadata = {
   title: "Hrizon-Cloud",
+  icons: 'icon.png'
 };
 
 export default function RootLayout({

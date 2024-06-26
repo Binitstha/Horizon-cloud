@@ -86,13 +86,13 @@ const Folders = () => {
               <div
                 key={folder.id}
                 className="flex flex-col gap-2 border-2 lg:h-32 lg:w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
-            >
+              >
                 <div className="flex flex-col justify-center items-center">
                   <span className="lg:text-5xl text-4xl">
                     <FaFolder />
                   </span>
                   <div className="text-ellipsis lg:text-base text-sm lg:w-32 w-20 overflow-clip text-nowrap text-center">
-                  {folder.name}
+                    {folder.name}
                   </div>
                 </div>
                 <div className="flex justify-center items-center gap-10 w-full">

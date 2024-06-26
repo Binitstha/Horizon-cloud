@@ -8,8 +8,10 @@ const RecentFolders = () => {
 
   return (
     <main className=" lg:pt-5 lg:p-10 p-2">
-      <div className=" rounded-md lg:p-5 p-2
-      ">
+      <div
+        className=" rounded-md lg:p-5 p-2
+      "
+      >
         <div className=" flex justify-between">
           <p className="lg:text-xl text-lg">Recent Folders</p>
           <button
