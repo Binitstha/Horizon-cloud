@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 import { FaRegFaceFrownOpen } from "react-icons/fa6";
 export default function NotFound() {
   return (
