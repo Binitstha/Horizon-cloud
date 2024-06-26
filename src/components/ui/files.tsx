@@ -25,6 +25,7 @@ import {
 } from "./dialog";
 import { Button } from "./button";
 import { movetToTrashFile } from "@/lib/actions";
+import { FilesSkeleton } from "../skeleton/skeletons";
 
 const Files = ({ viewAll }: { viewAll: boolean }) => {
   const [filesList, setFileList] = useState<File[]>([]);
@@ -34,7 +35,7 @@ const Files = ({ viewAll }: { viewAll: boolean }) => {
   useEffect(() => {
     if (!session) return;
     const trashFile = false;
-    const limit = viewAll ? true: false;
+    const limit = viewAll ? true : false;
 
     const unsubscribe = fileFetch(
       session,
@@ -50,10 +51,10 @@ const Files = ({ viewAll }: { viewAll: boolean }) => {
         unsubscribe();
       }
     };
-  }, [session,viewAll]);
+  }, [session, viewAll]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div><FilesSkeleton/></div>;
   }
   const handleClick = (URL: string) => {
     window.open(URL, "_blank");

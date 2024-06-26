@@ -2,9 +2,15 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { IoIosLogOut } from "react-icons/io";
+import { UserProfileSkeleton } from "../skeleton/skeletons";
 
 const UserProfile = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status == "loading") {
+    <UserProfileSkeleton />;
+  }
+
   return (
     <div className="border-2 flex justify-start p-3 gap-3 rounded-md items-center w-full h-20 ">
       <div>

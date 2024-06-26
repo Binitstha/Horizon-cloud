@@ -35,7 +35,7 @@ const Trash = () => {
   useEffect(() => {
     if (!session) return;
     const trashFile = true;
-    const limit = false
+    const limit = false;
 
     const unsubscribe = fileFetch(
       session,
@@ -43,7 +43,7 @@ const Trash = () => {
       setIsLoading,
       null,
       trashFile,
-      limit
+      limit,
     );
 
     return () => {

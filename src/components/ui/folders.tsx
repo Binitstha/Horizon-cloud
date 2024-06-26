@@ -9,7 +9,7 @@ import {
 import { FaFolder, FaRegStar } from "react-icons/fa";
 import app from "../../../config/firebaseConfig";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { toast } from "@/lib/use-toast";
 import { useRouter } from "next/navigation";
 import {
@@ -27,12 +27,12 @@ import {
   removeStarFolder,
   starFolder,
 } from "@/lib/actions";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { FoldersSkeleton } from "../skeleton/skeletons";
 
 const Folders = ({ viewAll }: { viewAll: boolean }) => {
   const { data: session } = useSession();
   const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!session) return;
@@ -41,8 +41,8 @@ const Folders = ({ viewAll }: { viewAll: boolean }) => {
     const unsubscribe = onSnapshot(
       collection(getFirestore(app), "folders"),
       (snapshot) => {
+        setLoading(false);
         if (snapshot.empty) {
-          setIsLoading(false);
           toast({
             variant: "destructive",
             description: `No folders found for ${session?.user?.email}`,
@@ -62,15 +62,16 @@ const Folders = ({ viewAll }: { viewAll: boolean }) => {
               folder.parentFolderId === null,
           );
         if (foldersData.length > 0) {
-          if(limit) {foldersData = foldersData.slice(0,10)}
+          if (limit) {
+            foldersData = foldersData.slice(0, 10);
+          }
           setFoldersList(foldersData);
         } else {
           setFoldersList([]);
         }
-        setIsLoading(false);
       },
       (error) => {
-        setIsLoading(false);
+        setLoading(false);
         toast({
           description: "Error fetching folders:",
           variant: "destructive",
@@ -87,8 +88,8 @@ const Folders = ({ viewAll }: { viewAll: boolean }) => {
     router.push(`/folder/${name}?id=${id}`);
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>; // Add a loading state to handle asynchronous fetch
+  if (loading) {
+    return <FoldersSkeleton />;
   }
 
   return (

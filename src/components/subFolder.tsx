@@ -32,12 +32,15 @@ import {
 import { MdDelete } from "react-icons/md";
 import { Button } from "./ui/button";
 import { movetToTrashFolder } from "@/lib/actions";
+import { SubFolderSkeleton } from "./skeleton/skeletons";
 
 const SubFolder = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [foldersList, setFoldersList] = useState<DocumentData[]>([]);
   const [filesList, setFilesList] = useState<File[]>([]);
+
+  const [loading, setLoading] = useState(true);
 
   const searchParams = useSearchParams();
 
@@ -50,6 +53,8 @@ const SubFolder = () => {
     const unsubscribe = onSnapshot(
       collection(getFirestore(app), "folders"),
       (snapshot) => {
+        setLoading(false);
+
         if (snapshot.empty) {
           toast({
             variant: "destructive",
@@ -71,6 +76,8 @@ const SubFolder = () => {
         setFoldersList(foldersData);
       },
       (error) => {
+        setLoading(false);
+
         toast({
           description: "Error while fetching folders:",
           variant: "destructive",
@@ -87,6 +94,10 @@ const SubFolder = () => {
   const handleClick = (id: string, name: string) => {
     router.push(`/folder/${name}?id=${id}`);
   };
+
+  if (loading) {
+    return <SubFolderSkeleton />;
+  }
 
   return (
     <main className=" pt-5 p-10">
@@ -160,7 +171,6 @@ const SubFolder = () => {
                               </DialogContent>
                             </Dialog>
                           </div>
-                          <div>s</div>
                         </div>
                       </div>
                     ))}

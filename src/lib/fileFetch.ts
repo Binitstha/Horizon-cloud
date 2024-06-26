@@ -9,7 +9,7 @@ export const fileFetch = (
   setIsLoading: (isLoading: boolean) => void,
   parentFolderId: string | null,
   trashFile: boolean,
-  limit: boolean
+  limit: boolean,
 ) => {
   setIsLoading(true);
   setFileList([]);

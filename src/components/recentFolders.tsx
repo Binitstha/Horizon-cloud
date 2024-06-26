@@ -19,7 +19,7 @@ const RecentFolders = () => {
           </span>
         </div>
         <div>
-          <Folders viewAll={viewAll}/>
+          <Folders viewAll={viewAll} />
         </div>
       </div>
     </main>
