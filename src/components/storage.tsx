@@ -1,17 +1,17 @@
 import UserProfile from "./ui/userProfile";
 import StorageInfo from "./ui/storageInformation";
 
-const storage = () => {
+const Storage = () => {
   return (
-    <div className="h-screen flex flex-col gap-10 p-5 sticky top-0">
-      <div className=" flex justify-center items-start ">
+    <div className="lg:h-screen absolute right-6 flex flex-col gap-10 p-5 lg:sticky lg:top-0">
+      <div className="flex justify-center items-start">
         <UserProfile />
       </div>
-      <div className="">
+      <div className="lg:flex hidden justify-center items-start">
         <StorageInfo />
       </div>
     </div>
   );
 };
 
-export default storage;
+export default Storage;

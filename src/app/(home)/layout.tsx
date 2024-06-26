@@ -24,11 +24,11 @@ export default function Page({ children }: { children: React.ReactNode }) {
           <div className="flex">
             <SideNav />
             <div className="flex justify-between w-full">
-              <div className="bg-gray-100 w-full">
+              <div className="bg-gray-100 w-full h-full min-h-screen">
                 <SearchBar />
                 {children}
               </div>
-              <div className="w-[30rem]">
+              <div className="w-[30rem] relative">
                 <Storage />
               </div>
             </div>

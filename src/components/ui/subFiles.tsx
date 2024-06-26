@@ -28,13 +28,14 @@ const Files = () => {
   useEffect(() => {
     if (!session) return;
     const trashFile = false;
-
+    const limit = false;
     const unsubscribe = fileFetch(
       session,
       setFileList,
       setIsLoading,
       parentFolderId,
       trashFile,
+      limit,
     );
 
     return () => {
@@ -68,13 +69,13 @@ const Files = () => {
                 </span>
                 <div
                   onClick={() => handleClick(file.downloadURL, file)}
-                  className="text-ellipsis overflow-clip text-nowrap text-center  max-w-96"
+                  className="text-ellipsis overflow-clip text-nowrap text-center lg:w-96 w-36"
                 >
                   {file.name}
                 </div>
               </div>
               <div className=" flex gap-5 justify-center items-center">
-                <div>
+                <div className="lg:inline hidden">
                   {file.lastModified &&
                     moment(file.lastModified).format("MMMM,DD,YYYY")}
                 </div>

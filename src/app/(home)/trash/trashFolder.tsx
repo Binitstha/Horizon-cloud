@@ -77,7 +77,7 @@ const Folders = () => {
   }
 
   return (
-    <div className="m-10">
+    <div className="lg:m-10 m-5">
       <div className="text-xl">Folders</div>
       <section className="flex justify-start items-center">
         <main className="mt-5 justify-start items-center flex flex-wrap gap-5">
@@ -85,21 +85,21 @@ const Folders = () => {
             foldersList.map((folder) => (
               <div
                 key={folder.id}
-                className="flex flex-col border-2 h-28 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
-              >
+                className="flex flex-col gap-2 border-2 lg:h-32 lg:w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
+            >
                 <div className="flex flex-col justify-center items-center">
-                  <span className="text-5xl">
+                  <span className="lg:text-5xl text-4xl">
                     <FaFolder />
                   </span>
-                  <div className="text-ellipsis w-32 overflow-clip text-nowrap text-center">
-                    {folder.name}
+                  <div className="text-ellipsis lg:text-base text-sm lg:w-32 w-20 overflow-clip text-nowrap text-center">
+                  {folder.name}
                   </div>
                 </div>
                 <div className="flex justify-center items-center gap-10 w-full">
                   <div className="flex justify-center items-center">
                     <Dialog>
                       <DialogTrigger>
-                        <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
+                        <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-[1rem]">
                           <FaTrashRestore />
                         </div>
                       </DialogTrigger>

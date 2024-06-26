@@ -21,9 +21,9 @@ const LoginPage = () => {
 
   return (
     <main className=" h-screen flex text-black justify-center items-center">
-      <section className="p-10 rounded-xl border-slate-300 border-2 flex flex-col gap-5 justify-center items-center">
+      <section className="p-10 lg:m-0 m-10 rounded-xl border-slate-300 border-2 flex flex-col gap-5 justify-center items-center">
         <h1 className="text-3xl">Horizon Cloud</h1>
-        <div className="flex justify-center items-center gap-3 my-10">
+        <div className="flex justify-center items-center gap-3 my-10 lg:flex-nowrap flex-wrap">
           <button
             className="gap-5 flex justify-center items-center p-2 w-64 rounded-lg border-slate-300 border-2"
             onClick={() => signIn("google")}

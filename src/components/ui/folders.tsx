@@ -99,16 +99,16 @@ const Folders = ({ viewAll }: { viewAll: boolean }) => {
           foldersList.map((folder) => (
             <div
               key={folder.id}
-              className="flex flex-col gap-2 border-2 h-32 w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
+              className="flex flex-col gap-2 border-2 lg:h-32 lg:w-44 text-xl rounded-xl cursor-pointer p-2 justify-center items-center hover:scale-105 transition-all duration-150"
             >
               <div
                 className="flex flex-col justify-center items-center"
                 onClick={() => handleClick(folder.id, folder.name)}
               >
-                <span className="text-5xl">
+                <span className="lg:text-5xl text-4xl">
                   <FaFolder />
                 </span>
-                <div className="text-ellipsis w-32 overflow-clip text-nowrap text-center">
+                <div className="text-ellipsis lg:text-base text-sm lg:w-32 w-20 overflow-clip text-nowrap text-center">
                   {folder.name}
                 </div>
               </div>
@@ -116,7 +116,7 @@ const Folders = ({ viewAll }: { viewAll: boolean }) => {
                 <div className="flex justify-center items-center">
                   <Dialog>
                     <DialogTrigger>
-                      <div className="flex justify-center items-center cursor-pointer text-2xl">
+                      <div className="flex justify-center items-center cursor-pointer lg:text-2xl">
                         <MdDelete />
                       </div>
                     </DialogTrigger>
@@ -139,10 +139,10 @@ const Folders = ({ viewAll }: { viewAll: boolean }) => {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <div>
+                <div className="lg:text-2xl text-lg">
                   {folder.starred ? (
                     <div onClick={() => removeStarFolder(folder.id)}>
-                      <FaStar />
+                      <FaStar className=""/>
                     </div>
                   ) : (
                     <div onClick={() => starFolder(folder.id)}>

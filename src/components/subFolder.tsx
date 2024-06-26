@@ -100,9 +100,9 @@ const SubFolder = () => {
   }
 
   return (
-    <main className=" pt-5 p-10">
-      <div className=" rounded-md p-5">
-        <div className=" flex justify-between">
+    <main className=" pt-5 p-10 w-full">
+      <div className=" rounded-md p-5 w-full">
+        <div className=" flex justify-between lg:w-auto w-80">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -120,8 +120,8 @@ const SubFolder = () => {
           </Breadcrumb>
           <span className=" text-blue-500">View all</span>
         </div>
-        <div>
-          <section className="flex justify-start items-center ">
+        <div className="w-full">
+          <section className="flex justify-start items-center lg:w-full w-80">
             <main className="mt-5 justify-start items-start flex flex-col flex-wrap w-full">
               {foldersList ? (
                 <>
@@ -129,16 +129,16 @@ const SubFolder = () => {
                     {foldersList.map((folder) => (
                       <div
                         key={folder.id}
-                        className="flex  text-lg text-md w-full rounded-xl cursor-pointer p-2 justify-between items-center transition-all duration-150"
+                        className="flex text-lg text-md w-full cursor-pointer p-2 justify-between items-center transition-all duration-150"
                       >
                         <div
-                          className=" flex justify-start gap-2 items-center  w-full"
+                          className=" flex justify-start gap-2 items-center w-full"
                           onClick={() => handleClick(folder.id, folder.name)}
                         >
                           <span className="text-2xl">
                             <FaFolder />
                           </span>
-                          <div className="text-ellipsis overflow-clip text-nowrap text-center">
+                          <div className="text-ellipsis overflow-hidden text-nowrap text-start lg:w-[25rem] w-48 whitespace-nowrap">
                             {folder.name}
                           </div>
                         </div>

@@ -72,8 +72,13 @@ export default function FreeSolo() {
   };
 
   return (
-    <div className="flex justify-start px-12 items-center p-7">
-      <Stack spacing={2} sx={{ width: 900 }}>
+    <div className="flex justify-start lg:px-12 items-center lg:p-7 py-4 px-3 lg:ml-0 ml-14">
+      <Stack
+        spacing={2}
+        sx={{
+          width: { xs: "66%", sm: "500px", lg: "900px" },
+        }}
+      >
         <FormControl id="free-solo-2-demo">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
@@ -113,7 +118,7 @@ export default function FreeSolo() {
                         ...params.InputProps,
                         startAdornment: (
                           <InputAdornment position="start">
-                            <FaSearch />
+                            <FaSearch  className="lg:text-lg text-sm"/>
                           </InputAdornment>
                         ),
                       }}

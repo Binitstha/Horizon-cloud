@@ -7,16 +7,16 @@ const RecentFiles = () => {
   const [viewAll, setViewAll] = useState<boolean>(true);
   return (
     <>
-      <main className="pt-0 p-10">
+      <main className="pt-0 lg:p-10">
         <div className="rounded-md p-5">
           <div className=" flex justify-between">
             <p className="text-xl">Recent Files</p>
-            <span
+            <button
               className=" text-blue-500 cursor-pointer"
               onClick={() => setViewAll(!viewAll)}
             >
               View all
-            </span>
+            </button>
           </div>
           <div>
             <Files viewAll={viewAll} />

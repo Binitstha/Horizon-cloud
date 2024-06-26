@@ -4,7 +4,7 @@ import TrashFolders from "./trashFolder";
 const Page = () => {
   return (
     <>
-      <div className=" m-10">
+      <div className=" lg:p-10 lg:w-auto w-screen">
         <TrashFolders />
         <TrashFiles />
       </div>

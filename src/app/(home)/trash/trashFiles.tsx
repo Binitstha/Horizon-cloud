@@ -58,7 +58,7 @@ const Trash = () => {
   }
   return (
     <>
-      <div className=" m-10">
+      <div className=" lg:m-10 m-5">
         <div className="text-xl">Files</div>
         <section className="">
           <Table>
@@ -76,7 +76,7 @@ const Trash = () => {
                     <TableCell>
                       <div className="flex gap-3 justify-start items-center">
                         <FaFileAlt />
-                        <div className="cursor-pointer">{file.name}</div>
+                        <div className="cursor-pointer lg:w-96 w-32  overflow-hidden h-6 text-ellipsis whitespace-nowrap">{file.name}</div>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -87,53 +87,59 @@ const Trash = () => {
                       {(file.size / 1024 ** 2).toFixed(2) + "MB"}
                     </TableCell>
                     <TableCell>
-                      <Dialog>
-                        <DialogTrigger>
-                          <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
-                            <MdDelete />
-                          </div>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you absolutely sure?</DialogTitle>
-                            <DialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your file from our servers.
-                            </DialogDescription>
-                          </DialogHeader>
-                          <Button
-                            type="submit"
-                            size="sm"
-                            className="px-3"
-                            onClick={() => deleteFile(file.id)}
-                          >
-                            <span>Delete</span>
-                          </Button>
-                        </DialogContent>
-                      </Dialog>
-                      <Dialog>
-                        <DialogTrigger>
-                          <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
-                            <FaTrashRestore />
-                          </div>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you absolutely sure?</DialogTitle>
-                            <DialogDescription>
-                              This action will restore your file from trash.
-                            </DialogDescription>
-                          </DialogHeader>
-                          <Button
-                            type="submit"
-                            size="sm"
-                            className="px-3"
-                            onClick={() => restoreFile(file.id)}
-                          >
-                            <span>Restore</span>
-                          </Button>
-                        </DialogContent>
-                      </Dialog>
+                      <div className="flex justify-start gap-4 w-fit items-center">
+                        <Dialog>
+                          <DialogTrigger>
+                            <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-xl">
+                              <MdDelete />
+                            </div>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Are you absolutely sure?
+                              </DialogTitle>
+                              <DialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete your file from our servers.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <Button
+                              type="submit"
+                              size="sm"
+                              className="px-3"
+                              onClick={() => deleteFile(file.id)}
+                            >
+                              <span>Delete</span>
+                            </Button>
+                          </DialogContent>
+                        </Dialog>
+                        <Dialog>
+                          <DialogTrigger>
+                            <div className=" hover:scale-125 flex justify-center items-center cursor-pointer text-[1rem]">
+                              <FaTrashRestore />
+                            </div>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Are you absolutely sure?
+                              </DialogTitle>
+                              <DialogDescription>
+                                This action will restore your file from trash.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <Button
+                              type="submit"
+                              size="sm"
+                              className="px-3"
+                              onClick={() => restoreFile(file.id)}
+                            >
+                              <span>Restore</span>
+                            </Button>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))

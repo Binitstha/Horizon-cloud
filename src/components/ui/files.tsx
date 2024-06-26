@@ -54,7 +54,11 @@ const Files = ({ viewAll }: { viewAll: boolean }) => {
   }, [session, viewAll]);
 
   if (isLoading) {
-    return <div><FilesSkeleton/></div>;
+    return (
+      <div>
+        <FilesSkeleton />
+      </div>
+    );
   }
   const handleClick = (URL: string) => {
     window.open(URL, "_blank");
@@ -78,7 +82,7 @@ const Files = ({ viewAll }: { viewAll: boolean }) => {
                   <div className="flex gap-3 justify-start items-center">
                     <FaFileAlt />
                     <div
-                      className="cursor-pointer"
+                      className="cursor-pointer lg:w-96 w-32 overflow-hidden h-6 text-ellipsis whitespace-nowrap"
                       onClick={() => handleClick(file.downloadURL)}
                     >
                       {file.name}
